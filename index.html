@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MouseLocator – Never Lose Your Cursor Again</title>
 
+<!-- Plausible Analytics (replace yourdomain.com with your actual domain) -->
+<script defer data-domain="yourdomain.com" src="https://plausible.io/js/script.tagged-events.js"></script>
+
 <style>
 * {
     box-sizing: border-box;
@@ -109,6 +112,10 @@ h1 {
     box-shadow: 0 14px 32px rgba(35, 107, 229, .35);
 }
 
+.primary:hover {
+    box-shadow: 0 17px 38px rgba(35, 107, 229, .5);
+}
+
 .secondary {
     min-width: 190px;
     border: 1px solid rgba(255, 255, 255, .22);
@@ -159,9 +166,9 @@ h1 {
     width: 30px;
     height: 40px;
     pointer-events: none;
+    color: #ff586c;
     font-size: 34px;
     line-height: 1;
-    color: #ff586c;
     text-shadow: 0 0 10px #ff334f, 0 0 20px #7f4cff;
     animation: rogue-move 17s ease-in-out infinite;
 }
@@ -234,13 +241,35 @@ h1 {
         #ffeaa0
     );
     filter: blur(3px);
-    animation: flame 0.13s ease-in-out infinite alternate;
+    animation: flame .13s ease-in-out infinite alternate;
 }
 
-.rocket1 { top: 14%; left: -60px; animation-delay: -.4s; }
-.rocket2 { top: 33%; left: -60px; font-size: 28px; animation-delay: -2s; }
-.rocket3 { top: 57%; left: -60px; font-size: 25px; animation-delay: -3.2s; }
-.rocket4 { top: 76%; left: -60px; font-size: 31px; animation-delay: -1.6s; }
+.rocket1 {
+    top: 14%;
+    left: -60px;
+    animation-delay: -.4s;
+}
+
+.rocket2 {
+    top: 33%;
+    left: -60px;
+    font-size: 28px;
+    animation-delay: -2s;
+}
+
+.rocket3 {
+    top: 57%;
+    left: -60px;
+    font-size: 25px;
+    animation-delay: -3.2s;
+}
+
+.rocket4 {
+    top: 76%;
+    left: -60px;
+    font-size: 31px;
+    animation-delay: -1.6s;
+}
 
 @keyframes rocket-fly {
     0% {
@@ -324,7 +353,7 @@ h1 {
     letter-spacing: .08em;
 }
 
-/* Actual cursors moving on carpet */
+/* Cursors moving on carpet */
 .carpet-cursor {
     position: absolute;
     z-index: 15;
@@ -368,26 +397,79 @@ h1 {
 }
 
 @keyframes carpet-one {
-    0% { left: 5%; opacity: 0; transform: rotate(-20deg); }
-    12% { opacity: 1; }
-    48% { left: 48%; transform: rotate(10deg); }
-    78% { left: 78%; transform: rotate(-12deg); }
-    100% { left: 96%; opacity: 0; }
+    0% {
+        left: 5%;
+        opacity: 0;
+        transform: rotate(-20deg);
+    }
+
+    12% {
+        opacity: 1;
+    }
+
+    48% {
+        left: 48%;
+        transform: rotate(10deg);
+    }
+
+    78% {
+        left: 78%;
+        transform: rotate(-12deg);
+    }
+
+    100% {
+        left: 96%;
+        opacity: 0;
+    }
 }
 
 @keyframes carpet-two {
-    0% { left: 8%; opacity: 0; transform: rotate(15deg); }
-    15% { opacity: 1; }
-    48% { left: 36%; transform: rotate(-12deg); }
-    78% { left: 72%; transform: rotate(10deg); }
-    100% { left: 97%; opacity: 0; }
+    0% {
+        left: 8%;
+        opacity: 0;
+        transform: rotate(15deg);
+    }
+
+    15% {
+        opacity: 1;
+    }
+
+    48% {
+        left: 36%;
+        transform: rotate(-12deg);
+    }
+
+    78% {
+        left: 72%;
+        transform: rotate(10deg);
+    }
+
+    100% {
+        left: 97%;
+        opacity: 0;
+    }
 }
 
 @keyframes carpet-three {
-    0% { left: 10%; opacity: 0; transform: rotate(-8deg); }
-    18% { opacity: 1; }
-    52% { left: 55%; transform: rotate(12deg); }
-    100% { left: 96%; opacity: 0; }
+    0% {
+        left: 10%;
+        opacity: 0;
+        transform: rotate(-8deg);
+    }
+
+    18% {
+        opacity: 1;
+    }
+
+    52% {
+        left: 55%;
+        transform: rotate(12deg);
+    }
+
+    100% {
+        left: 96%;
+        opacity: 0;
+    }
 }
 
 @keyframes placed-one {
@@ -422,7 +504,7 @@ h1 {
     }
 }
 
-/* Human-like cartoon boys */
+/* Cartoon boys */
 .boy {
     position: absolute;
     z-index: 18;
@@ -854,8 +936,8 @@ h1 {
 .install::after {
     content: "⚙";
     position: absolute;
-    right: -50px;
     top: 70px;
+    right: -50px;
     color: rgba(90,162,255,.08);
     font-size: 360px;
     line-height: 1;
@@ -901,16 +983,16 @@ h2 {
     position: relative;
     z-index: 2;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 22px;
-    width: min(1100px, 100%);
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+    width: min(1200px, 100%);
     margin: 0 auto;
 }
 
 .step {
     position: relative;
-    min-height: 290px;
-    padding: 28px;
+    min-height: 310px;
+    padding: 25px;
     border: 1px solid rgba(255,255,255,.12);
     border-radius: 18px;
     background: rgba(15,22,36,.9);
@@ -944,7 +1026,7 @@ h2 {
 .step p {
     color: #a8b1c0;
     font-size: 15px;
-    line-height: 1.75;
+    line-height: 1.7;
 }
 
 .step strong {
@@ -978,17 +1060,161 @@ footer a {
     text-decoration: none;
 }
 
-@media (max-width: 800px) {
+/* Legal Popup Modal */
+.legal-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, .75);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .35s ease, visibility .35s ease;
+}
+
+.legal-popup-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.legal-popup {
+    position: relative;
+    width: min(680px, 92vw);
+    max-height: 82vh;
+    overflow-y: auto;
+    background: linear-gradient(135deg, #121826, #0c111d);
+    border: 1px solid rgba(120, 160, 255, .25);
+    border-radius: 18px;
+    padding: 32px 28px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, .65);
+    transform: translateY(25px) scale(.97);
+    transition: transform .35s ease;
+}
+
+.legal-popup-overlay.show .legal-popup {
+    transform: translateY(0) scale(1);
+}
+
+.legal-popup h2 {
+    margin: 0 0 16px;
+    font-size: 26px;
+    color: #fff;
+    letter-spacing: -.03em;
+}
+
+.legal-popup p {
+    margin: 0 0 18px;
+    color: #b8c4d8;
+    line-height: 1.65;
+    font-size: 15px;
+}
+
+.legal-popup-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 22px 0 18px;
+}
+
+.legal-popup-links a {
+    flex: 1;
+    min-width: 180px;
+    padding: 13px 18px;
+    border-radius: 11px;
+    text-align: center;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.legal-popup-links a:hover {
+    transform: translateY(-2px);
+}
+
+.legal-popup-links .btn-tos {
+    background: linear-gradient(135deg, #5a94ff, #2b62d9);
+    color: #fff;
+    box-shadow: 0 10px 24px rgba(43, 98, 217, .35);
+}
+
+.legal-popup-links .btn-privacy {
+    border: 1px solid rgba(140, 180, 255, .35);
+    background: rgba(90, 148, 255, .08);
+    color: #9bc7ff;
+}
+
+.legal-popup-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, .08);
+}
+
+.legal-popup-buttons button {
+    padding: 11px 22px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    transition: transform .2s ease, opacity .2s ease;
+}
+
+.legal-popup-buttons button:hover {
+    transform: translateY(-2px);
+}
+
+.legal-popup-buttons .btn-accept {
+    background: linear-gradient(135deg, #64adff, #236be5);
+    border: none;
+    color: #fff;
+    box-shadow: 0 10px 24px rgba(35, 107, 229, .35);
+}
+
+.legal-popup-buttons .btn-decline {
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, .25);
+    color: #aab5c7;
+}
+
+@media (max-width: 640px) {
+    .legal-popup {
+        padding: 24px 18px;
+    }
+
+    .legal-popup h2 {
+        font-size: 21px;
+    }
+
+    .legal-popup-links {
+        flex-direction: column;
+    }
+
+    .legal-popup-links a {
+        min-width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .legal-popup-overlay,
+    .legal-popup {
+        transition: none !important;
+    }
+}
+
+@media (max-width: 1050px) {
     .steps {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (max-width: 640px) {
-    .container {
-        width: calc(100% - 32px);
-    }
-
     .hero {
         min-height: 820px;
         padding: 70px 16px 100px;
@@ -1015,12 +1241,13 @@ footer a {
         transform: scale(.94);
     }
 
-    .bg-cursor {
+    .bg-cursor,
+    .rocket4 {
         display: none;
     }
 
-    .rocket4 {
-        display: none;
+    .steps {
+        grid-template-columns: 1fr;
     }
 
     .install {
@@ -1031,8 +1258,7 @@ footer a {
 
 @media (prefers-reduced-motion: reduce) {
     *,
-    *::before,
-    *::after {
+    *::before {
         animation-duration: .01ms !important;
         animation-iteration-count: 1 !important;
         scroll-behavior: auto !important;
@@ -1049,6 +1275,33 @@ footer a {
 </head>
 
 <body>
+
+<!-- Legal Popup Modal -->
+<div class="legal-popup-overlay" id="legalPopup" role="dialog" aria-modal="true" aria-labelledby="legalPopupTitle">
+    <div class="legal-popup">
+        <h2 id="legalPopupTitle">Welcome to MouseLocator</h2>
+
+        <p>
+            Before you continue, please review our <strong>Terms of Service</strong> and <strong>Privacy Policy</strong>.
+            By using this website and downloading MouseLocator, you agree to these terms.
+        </p>
+
+        <p style="font-size:14px;opacity:.85;">
+            MouseLocator is a free macOS utility. We collect anonymous usage data to improve the project.
+            No personal data is stored or sold.
+        </p>
+
+        <div class="legal-popup-links">
+            <a class="btn-tos" href="tos.html" target="_blank" rel="noopener">Read Terms of Service</a>
+            <a class="btn-privacy" href="privacy.html" target="_blank" rel="noopener">Read Privacy Policy</a>
+        </div>
+
+        <div class="legal-popup-buttons">
+            <button class="btn-decline" id="btnDecline">Decline</button>
+            <button class="btn-accept" id="btnAccept">I Agree & Continue</button>
+        </div>
+    </div>
+</div>
 
 <div class="rogue" aria-hidden="true">➤</div>
 
@@ -1070,30 +1323,18 @@ footer a {
 
     <div class="cursor-rocket rocket1" aria-hidden="true">
         ➤
-        <span class="flame"></span>
-        <span class="spark"></span>
-        <span class="spark two"></span>
     </div>
 
     <div class="cursor-rocket rocket2" aria-hidden="true">
         ➤
-        <span class="flame"></span>
-        <span class="spark"></span>
-        <span class="spark two"></span>
     </div>
 
     <div class="cursor-rocket rocket3" aria-hidden="true">
         ➤
-        <span class="flame"></span>
-        <span class="spark"></span>
-        <span class="spark two"></span>
     </div>
 
     <div class="cursor-rocket rocket4" aria-hidden="true">
         ➤
-        <span class="flame"></span>
-        <span class="spark"></span>
-        <span class="spark two"></span>
     </div>
 
     <div class="hero-content">
@@ -1109,7 +1350,7 @@ footer a {
 
         <div class="buttons">
             <a
-                class="button primary"
+                class="button primary plausible-event-name=Download+Click"
                 href="https://github.com/yoavharari/mouselocator/releases/download/v1.0.0/MouseLocator.zip"
                 download
             >
@@ -1117,7 +1358,7 @@ footer a {
             </a>
 
             <a
-                class="button secondary"
+                class="button secondary plausible-event-name=Donate+Click"
                 href="https://paypal.me/yoavharari"
                 target="_blank"
                 rel="noopener noreferrer"
@@ -1202,14 +1443,16 @@ footer a {
 
         <p>
             Install it once, grant macOS the permissions it needs,
-            and let your cursor stop hiding.
+            and make sure it launches automatically whenever you sign in.
         </p>
     </div>
 
     <div class="steps">
         <article class="step">
             <div class="step-number">1</div>
+
             <h3>Unzip</h3>
+
             <p>
                 Extract the downloaded <code>MouseLocator.zip</code> file and drag
                 <code>MouseLocator.app</code> into your <strong>Applications</strong> folder.
@@ -1218,10 +1461,12 @@ footer a {
 
         <article class="step">
             <div class="step-number">2</div>
+
             <h3>Bypass Gatekeeper</h3>
+
             <p>
                 Double-click the app. If macOS says
-                <em>“Apple could not verify…”</em>, click <strong>Done</strong>.
+                <em>"Apple could not verify…"</em>, click <strong>Done</strong>.
                 Then open <strong>System Settings → Privacy &amp; Security</strong>
                 and click <strong>Open Anyway</strong>.
             </p>
@@ -1229,7 +1474,9 @@ footer a {
 
         <article class="step">
             <div class="step-number">3</div>
+
             <h3>Grant Permissions</h3>
+
             <p>
                 In <strong>System Settings → Privacy &amp; Security</strong>,
                 add MouseLocator to both:
@@ -1238,22 +1485,92 @@ footer a {
                 • <strong>Input Monitoring</strong> — needed for the hotkey.
             </p>
         </article>
+
+        <article class="step">
+            <div class="step-number">4</div>
+
+            <h3>Launch Automatically</h3>
+
+            <p>
+                Open <strong>System Settings → General → Login Items</strong>.
+                Under <strong>Open at Login</strong>, click the
+                <strong>+</strong> button, choose
+                <code>MouseLocator.app</code> from your
+                <strong>Applications</strong> folder, and confirm.
+            </p>
+        </article>
     </div>
 </section>
 
 <footer>
     <p>&copy; 2026 MouseLocator. All rights reserved.</p>
+
     <p>
-        Have a question?
-        <a
-            href="https://paypal.me/yoavharari"
-            target="_blank"
-            rel="noopener noreferrer"
-        >
-            Get in touch
-        </a>
+        <a href="tos.html">Terms of Service</a>
+        ·
+        <a href="privacy.html">Privacy Policy</a>
+    </p>
+
+    <p style="font-size:12px;opacity:.7;margin-top:10px;">
+        This site uses anonymous analytics to improve the project. No personal data is collected.
     </p>
 </footer>
+
+<script>
+// Legal Popup - Show once per visitor using localStorage
+(function () {
+    var STORAGE_KEY = 'mouselocator_legal_consent';
+    var popup = document.getElementById('legalPopup');
+    var btnAccept = document.getElementById('btnAccept');
+    var btnDecline = document.getElementById('btnDecline');
+
+    if (!popup || !btnAccept || !btnDecline) {
+        return;
+    }
+
+    // Check if user has already accepted
+    var hasAccepted = localStorage.getItem(STORAGE_KEY) === 'true';
+
+    if (!hasAccepted) {
+        // Show popup after brief delay
+        setTimeout(function () {
+            popup.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }, 400);
+    }
+
+    function closePopup() {
+        popup.classList.remove('show');
+        document.body.style.overflow = '';
+    }
+
+    btnAccept.addEventListener('click', function () {
+        localStorage.setItem(STORAGE_KEY, 'true');
+        closePopup();
+    });
+
+    btnDecline.addEventListener('click', function () {
+        localStorage.setItem(STORAGE_KEY, 'false');
+        closePopup();
+    });
+
+    // Close on outside click
+    popup.addEventListener('click', function (e) {
+        if (e.target === popup) {
+            localStorage.setItem(STORAGE_KEY, 'false');
+            closePopup();
+        }
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && popup.classList.contains('show')) {
+            localStorage.setItem(STORAGE_KEY, 'false');
+            closePopup();
+        }
+    });
+})();
+</script>
 
 <script>
 (function () {
@@ -1305,4 +1622,3 @@ footer a {
 
 </body>
 </html>
-```
