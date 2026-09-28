@@ -1,1482 +1,1308 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#080a10">
-    <title>MouseLocator – Never Lose Your Cursor Again</title>
-
-    <style>
-        :root {
-            --text: #f5f7fb;
-            --muted: #9da6b8;
-            --blue: #5aa2ff;
-            --border: rgba(255, 255, 255, 0.1);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            min-width: 320px;
-            overflow-x: hidden;
-            color: var(--text);
-            background:
-                radial-gradient(circle at 15% 12%, rgba(53, 105, 255, 0.12), transparent 28rem),
-                radial-gradient(circle at 88% 24%, rgba(244, 63, 94, 0.08), transparent 26rem),
-                linear-gradient(135deg, #080a10 0%, #111622 52%, #080a10 100%);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-            line-height: 1.6;
-        }
-
-        a {
-            color: inherit;
-        }
-
-        .container {
-            width: min(1100px, calc(100% - 48px));
-            margin: 0 auto;
-        }
-
-        .ambient {
-            position: fixed;
-            inset: 0;
-            z-index: -1;
-            overflow: hidden;
-            pointer-events: none;
-        }
-
-        .ambient::before,
-        .ambient::after {
-            content: "";
-            position: absolute;
-            width: 420px;
-            height: 420px;
-            border-radius: 50%;
-            filter: blur(25px);
-            opacity: 0.16;
-        }
-
-        .ambient::before {
-            top: 18%;
-            left: -180px;
-            background: #2563eb;
-        }
-
-        .ambient::after {
-            right: -190px;
-            bottom: 10%;
-            background: #dc2626;
-        }
-
-        /* Floating colorful cursor icons */
-        .cursor-icon {
-            position: absolute;
-            z-index: 3;
-            width: 48px;
-            height: 48px;
-            color: white;
-            opacity: 0.2;
-            pointer-events: auto;
-            cursor: pointer;
-            transition: opacity 0.3s ease, filter 0.3s ease;
-            animation: float 7s ease-in-out infinite;
-        }
-
-        .cursor-icon:hover {
-            opacity: 1;
-            animation:
-                rainbow-glow 2s linear infinite,
-                float 4s ease-in-out infinite;
-        }
-
-        .cursor-icon-1 { top: 12%; left: 6%; width: 56px; height: 56px; }
-        .cursor-icon-2 { top: 22%; right: 8%; animation-delay: -1s; }
-        .cursor-icon-3 { bottom: 25%; left: 8%; width: 52px; height: 52px; animation-delay: -2s; }
-        .cursor-icon-4 { bottom: 18%; right: 6%; width: 60px; height: 60px; animation-delay: -0.5s; }
-        .cursor-icon-5 { top: 45%; left: 3%; width: 44px; height: 44px; animation-delay: -1.5s; }
-        .cursor-icon-6 { top: 50%; right: 4%; width: 50px; height: 50px; animation-delay: -2.5s; }
-        .cursor-icon-7 { top: 8%; right: 25%; width: 42px; height: 42px; animation-delay: -0.8s; }
-        .cursor-icon-8 { bottom: 8%; left: 30%; animation-delay: -1.8s; }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translate(0, 0) rotate(0);
-            }
-
-            50% {
-                transform: translate(8px, -18px) rotate(5deg);
-            }
-        }
-
-        @keyframes rainbow-glow {
-            0% {
-                color: #ff3b30;
-                filter: drop-shadow(0 0 12px #ff3b30);
-            }
-
-            25% {
-                color: #ffd60a;
-                filter: drop-shadow(0 0 12px #ffd60a);
-            }
-
-            50% {
-                color: #30d158;
-                filter: drop-shadow(0 0 12px #30d158);
-            }
-
-            75% {
-                color: #0a84ff;
-                filter: drop-shadow(0 0 12px #0a84ff);
-            }
-
-            100% {
-                color: #bf5af2;
-                filter: drop-shadow(0 0 12px #bf5af2);
-            }
-        }
-
-        /* Hero */
-        .hero {
-            position: relative;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 90px 24px 70px;
-            overflow: hidden;
-            isolation: isolate;
-        }
-
-        .hero::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: -1px;
-            height: 180px;
-            z-index: -1;
-            background: linear-gradient(to bottom, transparent, #080a10);
-            pointer-events: none;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 5;
-            width: min(800px, 100%);
-            text-align: center;
-        }
-
-        .eyebrow {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 22px;
-            padding: 7px 13px;
-            border: 1px solid rgba(90, 162, 255, 0.28);
-            border-radius: 999px;
-            color: #a9ccff;
-            background: rgba(31, 83, 170, 0.14);
-            font-size: 0.78rem;
-            font-weight: 700;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-        }
-
-        .eyebrow::before {
-            content: "";
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: #49e28f;
-            box-shadow: 0 0 14px #49e28f;
-        }
-
-        h1 {
-            max-width: 780px;
-            margin: 0 auto 24px;
-            color: #ffffff;
-            font-size: clamp(2.7rem, 8vw, 5.5rem);
-            font-weight: 780;
-            letter-spacing: -0.065em;
-            line-height: 0.98;
-        }
-
-        .hero-subtitle {
-            max-width: 680px;
-            margin: 0 auto 40px;
-            color: var(--muted);
-            font-size: clamp(1rem, 2.5vw, 1.22rem);
-            line-height: 1.7;
-        }
-
-        .hero-subtitle strong {
-            color: #b9d6ff;
-            font-weight: 700;
-        }
-
-        .button-group {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 14px;
-            margin-bottom: 42px;
-        }
-
-        .button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 52px;
-            padding: 14px 24px;
-            border-radius: 12px;
-            font-size: 0.98rem;
-            font-weight: 700;
-            text-decoration: none;
-            transition:
-                transform 0.25s ease,
-                box-shadow 0.25s ease,
-                border-color 0.25s ease;
-        }
-
-        .button:hover {
-            transform: translateY(-3px);
-        }
-
-        .button-primary {
-            min-width: 225px;
-            color: white;
-            background: linear-gradient(135deg, #5ba5ff, #246be6);
-            box-shadow: 0 12px 30px rgba(37, 99, 235, 0.3);
-        }
-
-        .button-primary:hover {
-            box-shadow: 0 17px 38px rgba(37, 99, 235, 0.46);
-        }
-
-        .button-secondary {
-            min-width: 190px;
-            color: #eaf1ff;
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .button-secondary:hover {
-            border-color: rgba(255, 255, 255, 0.4);
-            background: rgba(255, 255, 255, 0.09);
-        }
-
-        /* Shooting stars */
-        .shooting-star {
-            position: absolute;
-            width: 92px;
-            height: 2px;
-            opacity: 0;
-            transform: rotate(-28deg);
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.95));
-            box-shadow: 0 0 12px #fff, 0 0 24px #80b8ff;
-            animation: shooting-star 5.8s linear infinite;
-        }
-
-        .shooting-star::after {
-            content: "";
-            position: absolute;
-            right: 0;
-            top: -3px;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: white;
-            box-shadow: 0 0 12px #fff;
-        }
-
-        .shooting-star.one {
-            top: 16%;
-            right: 12%;
-            animation-delay: 1s;
-        }
-
-        .shooting-star.two {
-            top: 30%;
-            left: 9%;
-            transform: rotate(28deg);
-            animation-delay: 3.5s;
-        }
-
-        @keyframes shooting-star {
-            0%, 72% {
-                opacity: 0;
-                transform: translate(0, 0) rotate(-28deg);
-            }
-
-            76% {
-                opacity: 0.9;
-            }
-
-            88%, 100% {
-                opacity: 0;
-                transform: translate(-150px, 100px) rotate(-28deg);
-            }
-        }
-
-        @keyframes shooting-star-two {
-            0%, 72% {
-                opacity: 0;
-                transform: translate(0, 0) rotate(28deg);
-            }
-
-            76% {
-                opacity: 0.9;
-            }
-
-            88%, 100% {
-                opacity: 0;
-                transform: translate(150px, 100px) rotate(28deg);
-            }
-        }
-
-        .shooting-star.two {
-            animation-name: shooting-star-two;
-        }
-
-        /* Red carpet scene */
-        .carpet-scene {
-            position: relative;
-            width: min(580px, 94vw);
-            height: 188px;
-            margin: 0 auto;
-            perspective: 700px;
-        }
-
-        .carpet {
-            position: absolute;
-            left: 6%;
-            right: 6%;
-            bottom: 14px;
-            height: 92px;
-            border: 1px solid rgba(255, 176, 176, 0.3);
-            border-radius: 12px 12px 5px 5px;
-            transform: rotateX(52deg);
-            transform-origin: bottom;
-            background:
-                repeating-linear-gradient(
-                    90deg,
-                    transparent 0,
-                    transparent 28px,
-                    rgba(255, 255, 255, 0.045) 29px,
-                    transparent 30px
-                ),
-                linear-gradient(90deg, #55151d, #d0293b 50%, #55151d);
-            box-shadow:
-                0 16px 0 #47111a,
-                0 23px 26px rgba(0, 0, 0, 0.5),
-                inset 0 0 32px rgba(0, 0, 0, 0.4);
-        }
-
-        .carpet::before,
-        .carpet::after {
-            content: "";
-            position: absolute;
-            top: -4px;
-            bottom: -4px;
-            width: 13px;
-            border-radius: 4px;
-            background: linear-gradient(#f5c36b, #9a571d, #f5c36b);
-            box-shadow: 0 0 12px rgba(245, 195, 107, 0.2);
-        }
-
-        .carpet::before {
-            left: -16px;
-        }
-
-        .carpet::after {
-            right: -16px;
-        }
-
-        .carpet-label {
-            position: absolute;
-            right: 2%;
-            bottom: 0;
-            z-index: 3;
-            padding: 3px 8px;
-            transform: rotate(-8deg);
-            color: #ffd6d6;
-            border: 1px solid rgba(255, 214, 214, 0.25);
-            border-radius: 4px;
-            background: rgba(70, 7, 16, 0.75);
-            font-size: 0.63rem;
-            font-weight: 800;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
-
-        .scene-cursor {
-            position: absolute;
-            z-index: 4;
-            width: 29px;
-            height: 39px;
-            filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.4));
-            animation: cursor-route 7s ease-in-out infinite;
-        }
-
-        .scene-cursor::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            clip-path: polygon(5% 2%, 91% 65%, 57% 67%, 75% 97%, 61% 100%, 43% 70%, 20% 92%);
-            background: white;
-        }
-
-        .scene-cursor::after {
-            content: "";
-            position: absolute;
-            inset: 3px 3px 4px 4px;
-            clip-path: polygon(5% 2%, 91% 65%, 57% 67%, 75% 97%, 61% 100%, 43% 70%, 20% 92%);
-            background: #273244;
-        }
-
-        .scene-cursor.one {
-            left: 17%;
-            top: 25px;
-            animation-delay: -1s;
-        }
-
-        .scene-cursor.two {
-            left: 49%;
-            top: 56px;
-            animation-name: cursor-route-two;
-            animation-delay: -4s;
-        }
-
-        .scene-cursor.three {
-            right: 17%;
-            top: 18px;
-            animation-name: cursor-route-three;
-            animation-delay: -2.6s;
-        }
-
-        @keyframes cursor-route {
-            0%, 100% {
-                transform: translate(0, 0) rotate(-9deg);
-            }
-
-            28% {
-                transform: translate(68px, 26px) rotate(9deg);
-            }
-
-            55% {
-                transform: translate(128px, -4px) rotate(-14deg);
-            }
-
-            78% {
-                transform: translate(45px, 42px) rotate(8deg);
-            }
-        }
-
-        @keyframes cursor-route-two {
-            0%, 100% {
-                transform: translate(0, 0) rotate(12deg) scale(0.78);
-            }
-
-            34% {
-                transform: translate(-95px, 28px) rotate(-14deg) scale(0.78);
-            }
-
-            64% {
-                transform: translate(-38px, -24px) rotate(10deg) scale(0.78);
-            }
-        }
-
-        @keyframes cursor-route-three {
-            0%, 100% {
-                transform: translate(0, 0) rotate(-12deg) scale(0.62);
-            }
-
-            40% {
-                transform: translate(-72px, 35px) rotate(13deg) scale(0.62);
-            }
-
-            72% {
-                transform: translate(-120px, 4px) rotate(-5deg) scale(0.62);
-            }
-        }
-
-        /* Stick figures */
-        .stick-figure {
-            position: absolute;
-            z-index: 5;
-            bottom: 66px;
-            width: 60px;
-            height: 88px;
-            color: #f6d49b;
-            animation: figure-bob 2.4s ease-in-out infinite;
-        }
-
-        .stick-figure.left {
-            left: 10%;
-        }
-
-        .stick-figure.right {
-            right: 10%;
-            transform: scaleX(-1);
-            animation-name: figure-bob-right;
-            animation-delay: -1s;
-        }
-
-        .stick-head {
-            position: absolute;
-            top: 0;
-            left: 22px;
-            width: 24px;
-            height: 24px;
-            border: 3px solid currentColor;
-            border-radius: 50%;
-            background: #241c1d;
-        }
-
-        .stick-body,
-        .stick-arm,
-        .stick-leg {
-            position: absolute;
-            width: 3px;
-            border-radius: 4px;
-            background: currentColor;
-            transform-origin: top center;
-        }
-
-        .stick-body {
-            top: 25px;
-            left: 33px;
-            height: 38px;
-        }
-
-        .stick-arm {
-            top: 32px;
-            left: 33px;
-            height: 30px;
-        }
-
-        .stick-arm.one {
-            transform: rotate(62deg);
-        }
-
-        .stick-arm.two {
-            transform: rotate(-65deg);
-        }
-
-        .stick-leg {
-            top: 61px;
-            left: 33px;
-            height: 31px;
-        }
-
-        .stick-leg.one {
-            transform: rotate(28deg);
-        }
-
-        .stick-leg.two {
-            transform: rotate(-28deg);
-        }
-
-        .catch-label {
-            position: absolute;
-            top: -31px;
-            left: -13px;
-            padding: 3px 7px;
-            color: #ffd9a4;
-            border: 1px solid rgba(255, 217, 164, 0.24);
-            border-radius: 5px;
-            background: rgba(40, 22, 17, 0.72);
-            font-size: 0.62rem;
-            font-weight: 800;
-            white-space: nowrap;
-        }
-
-        @keyframes figure-bob {
-            0%, 100% {
-                transform: translateY(0) rotate(-2deg);
-            }
-
-            50% {
-                transform: translateY(-5px) rotate(2deg);
-            }
-        }
-
-        @keyframes figure-bob-right {
-            0%, 100% {
-                transform: translateY(0) scaleX(-1) rotate(-2deg);
-            }
-
-            50% {
-                transform: translateY(-5px) scaleX(-1) rotate(2deg);
-            }
-        }
-
-        /* Rogue cursor roaming around the page */
-        .rogue-cursor {
-            position: fixed;
-            z-index: 50;
-            left: 18vw;
-            top: 34vh;
-            width: 30px;
-            height: 41px;
-            pointer-events: none;
-            filter: drop-shadow(0 5px 7px rgba(0, 0, 0, 0.55));
-            animation: rogue-roam 18s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
-        }
-
-        .rogue-cursor::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            clip-path: polygon(
-                4% 0%,
-                94% 65%,
-                57% 68%,
-                76% 99%,
-                60% 100%,
-                42% 70%,
-                18% 94%
-            );
-            background: #ffffff;
-        }
-
-        .rogue-cursor::after {
-            content: "";
-            position: absolute;
-            inset: 3px 3px 4px 4px;
-            clip-path: polygon(
-                4% 0%,
-                94% 65%,
-                57% 68%,
-                76% 99%,
-                60% 100%,
-                42% 70%,
-                18% 94%
-            );
-            background: linear-gradient(145deg, #ff5b5b, #8e2de2);
-        }
-
-        .rogue-cursor-label {
-            position: absolute;
-            top: -23px;
-            left: 19px;
-            padding: 2px 6px;
-            border: 1px solid rgba(255, 145, 145, 0.35);
-            border-radius: 4px;
-            color: #ffc6c6;
-            background: rgba(72, 14, 28, 0.82);
-            font-size: 0.55rem;
-            font-weight: 900;
-            letter-spacing: 0.08em;
-            white-space: nowrap;
-            opacity: 0;
-            transform: translateY(4px);
-            transition: opacity 0.25s ease, transform 0.25s ease;
-        }
-
-        @keyframes rogue-roam {
-            0% {
-                left: 14vw;
-                top: 30vh;
-                transform: rotate(-12deg) scale(0.9);
-            }
-
-            12% {
-                left: 67vw;
-                top: 19vh;
-                transform: rotate(18deg) scale(1);
-            }
-
-            24% {
-                left: 84vw;
-                top: 62vh;
-                transform: rotate(-25deg) scale(0.82);
-            }
-
-            38% {
-                left: 57vw;
-                top: 78vh;
-                transform: rotate(13deg) scale(1.08);
-            }
-
-            51% {
-                left: 22vw;
-                top: 68vh;
-                transform: rotate(-18deg) scale(0.86);
-            }
-
-            66% {
-                left: 7vw;
-                top: 49vh;
-                transform: rotate(27deg) scale(1);
-            }
-
-            79% {
-                left: 31vw;
-                top: 13vh;
-                transform: rotate(-8deg) scale(0.8);
-            }
-
-            91% {
-                left: 78vw;
-                top: 38vh;
-                transform: rotate(21deg) scale(1.05);
-            }
-
-            100% {
-                left: 14vw;
-                top: 30vh;
-                transform: rotate(-12deg) scale(0.9);
-            }
-        }
-
-        /* Magical puff following the user's real cursor */
-        .magic-puff {
-            position: fixed;
-            z-index: 100;
-            left: 0;
-            top: 0;
-            width: 24px;
-            height: 24px;
-            pointer-events: none;
-            opacity: 0;
-            transform: translate(-50%, -50%);
-            transition: opacity 0.35s ease;
-        }
-
-        .magic-puff.visible {
-            opacity: 1;
-        }
-
-        .magic-puff span {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: #ffffff;
-            box-shadow:
-                0 0 7px #ffffff,
-                0 0 14px #8ec5ff;
-            transform: translate(-50%, -50%);
-            animation: puff-spark 1.1s ease-out infinite;
-        }
-
-        .magic-puff span:nth-child(1) {
-            --x: -18px;
-            --y: -12px;
-            background: #8ec5ff;
-        }
-
-        .magic-puff span:nth-child(2) {
-            --x: 17px;
-            --y: -9px;
-            background: #d6a5ff;
-            animation-delay: -0.22s;
-        }
-
-        .magic-puff span:nth-child(3) {
-            --x: 18px;
-            --y: 14px;
-            background: #ffd166;
-            animation-delay: -0.44s;
-        }
-
-        .magic-puff span:nth-child(4) {
-            --x: -15px;
-            --y: 17px;
-            background: #ff91c8;
-            animation-delay: -0.66s;
-        }
-
-        .magic-puff span:nth-child(5) {
-            --x: 0;
-            --y: -20px;
-            background: #9effc2;
-            animation-delay: -0.88s;
-        }
-
-        @keyframes puff-spark {
-            0% {
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(0.3);
-            }
-
-            25% {
-                opacity: 1;
-            }
-
-            100% {
-                opacity: 0;
-                transform:
-                    translate(
-                        calc(-50% + var(--x)),
-                        calc(-50% + var(--y))
-                    )
-                    scale(1.15);
-            }
-        }
-
-        /* QR section */
-        .qr-section {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            width: fit-content;
-            margin: 0 auto;
-            padding: 12px 16px 12px 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            background: rgba(255, 255, 255, 0.035);
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
-        }
-
-        .qr-image {
-            width: 94px;
-            height: 94px;
-            padding: 6px;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 10px;
-            background: white;
-            transition: transform 0.3s ease;
-        }
-
-        .qr-image:hover {
-            transform: rotate(3deg) scale(1.05);
-        }
-
-        .qr-copy {
-            text-align: left;
-        }
-
-        .qr-copy strong {
-            display: block;
-            margin-bottom: 3px;
-            color: #e9eef8;
-            font-size: 0.92rem;
-        }
-
-        .qr-text {
-            color: #8993a6;
-            font-size: 0.8rem;
-        }
-
-        /* Scroll cue */
-        .scroll-cue {
-            position: absolute;
-            left: 50%;
-            bottom: 20px;
-            z-index: 8;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-            color: #758096;
-            font-size: 0.68rem;
-            font-weight: 800;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-            text-decoration: none;
-            transform: translateX(-50%);
-        }
-
-        .scroll-cue:hover {
-            color: #c2d6ff;
-        }
-
-        .scroll-track {
-            position: relative;
-            width: 25px;
-            height: 42px;
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            border-radius: 20px;
-        }
-
-        .scroll-track::after {
-            content: "";
-            position: absolute;
-            left: 50%;
-            top: 8px;
-            width: 5px;
-            height: 9px;
-            border-radius: 5px;
-            background: #ffffff;
-            box-shadow: 0 0 10px #80b8ff;
-            transform: translateX(-50%);
-            animation: scroll-wheel 1.8s ease-in-out infinite;
-        }
-
-        .scroll-cursor {
-            position: absolute;
-            right: -12px;
-            bottom: -10px;
-            width: 18px;
-            height: 25px;
-            filter: drop-shadow(0 0 5px rgba(100, 170, 255, 0.8));
-            animation: cursor-scroll 1.8s ease-in-out infinite;
-        }
-
-        .scroll-cursor::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            clip-path: polygon(4% 0, 93% 66%, 56% 68%, 74% 100%, 58% 100%, 41% 70%, 19% 93%);
-            background: #fff;
-        }
-
-        .scroll-cursor::after {
-            content: "";
-            position: absolute;
-            inset: 2px;
-            clip-path: polygon(4% 0, 93% 66%, 56% 68%, 74% 100%, 58% 100%, 41% 70%, 19% 93%);
-            background: #5a9df8;
-        }
-
-        @keyframes scroll-wheel {
-            0%, 100% {
-                transform: translate(-50%, 0);
-                opacity: 1;
-            }
-
-            55% {
-                transform: translate(-50%, 13px);
-                opacity: 0.2;
-            }
-        }
-
-        @keyframes cursor-scroll {
-            0%, 100% {
-                transform: translateY(0) rotate(-8deg);
-            }
-
-            55% {
-                transform: translateY(14px) rotate(-8deg);
-            }
-        }
-
-        /* Installation section */
-        .install-section {
-            position: relative;
-            padding: 112px 24px 120px;
-            border-top: 1px solid rgba(255, 255, 255, 0.07);
-            background:
-                linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 30%),
-                rgba(5, 7, 12, 0.46);
-        }
-
-        .section-heading {
-            max-width: 700px;
-            margin: 0 auto 58px;
-            text-align: center;
-        }
-
-        .section-kicker {
-            margin-bottom: 11px;
-            color: #72adff;
-            font-size: 0.74rem;
-            font-weight: 800;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-        }
-
-        .section-title {
-            margin-bottom: 14px;
-            color: #ffffff;
-            font-size: clamp(2rem, 5vw, 3.2rem);
-            font-weight: 760;
-            letter-spacing: -0.045em;
-            line-height: 1.05;
-        }
-
-        .section-intro {
-            color: var(--muted);
-            font-size: 1.02rem;
-        }
-
-        .steps-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 22px;
-        }
-
-        .step {
-            position: relative;
-            min-height: 300px;
-            padding: 28px;
-            overflow: hidden;
-            border: 1px solid var(--border);
-            border-radius: 18px;
-            background:
-                linear-gradient(145deg, rgba(50, 104, 201, 0.15), rgba(255, 255, 255, 0.025)),
-                rgba(12, 16, 26, 0.72);
-            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.16);
-            transition:
-                transform 0.3s ease,
-                border-color 0.3s ease,
-                background 0.3s ease;
-        }
-
-        .step::after {
-            content: "";
-            position: absolute;
-            right: -35px;
-            bottom: -50px;
-            width: 140px;
-            height: 140px;
-            border: 1px solid rgba(90, 162, 255, 0.13);
-            border-radius: 50%;
-        }
-
-        .step:hover {
-            border-color: rgba(90, 162, 255, 0.45);
-            background:
-                linear-gradient(145deg, rgba(50, 104, 201, 0.22), rgba(255, 255, 255, 0.04)),
-                rgba(12, 16, 26, 0.84);
-            transform: translateY(-7px);
-        }
-
-        .step-badge {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 48px;
-            height: 48px;
-            margin-bottom: 22px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 14px;
-            color: white;
-            background: linear-gradient(135deg, #5da7ff, #236ee8);
-            box-shadow: 0 10px 24px rgba(35, 110, 232, 0.28);
-            font-size: 1.25rem;
-            font-weight: 800;
-        }
-
-        .step-title {
-            margin-bottom: 12px;
-            color: #ffffff;
-            font-size: 1.25rem;
-            font-weight: 750;
-        }
-
-        .step-description {
-            position: relative;
-            z-index: 1;
-            color: #a8b1c0;
-            font-size: 0.94rem;
-            line-height: 1.75;
-        }
-
-        .step-description strong {
-            color: #edf3ff;
-        }
-
-        .step-description code {
-            padding: 3px 6px;
-            border: 1px solid rgba(90, 162, 255, 0.2);
-            border-radius: 5px;
-            color: #9fc7ff;
-            background: rgba(90, 162, 255, 0.1);
-            font-family: "SFMono-Regular", Consolas, monospace;
-            font-size: 0.85em;
-        }
-
-        .step-icon {
-            position: absolute;
-            top: 31px;
-            right: 25px;
-            color: rgba(145, 190, 255, 0.27);
-            font-size: 1.7rem;
-        }
-
-        /* Footer */
-        footer {
-            padding: 55px 24px;
-            border-top: 1px solid rgba(255, 255, 255, 0.07);
-            color: #7e8797;
-            text-align: center;
-            background: rgba(4, 6, 10, 0.72);
-        }
-
-        .footer-text {
-            margin-bottom: 9px;
-            font-size: 0.9rem;
-        }
-
-        .footer-link {
-            color: #83b9ff;
-            text-decoration: none;
-        }
-
-        .footer-link:hover {
-            text-decoration: underline;
-        }
-
-        :focus-visible {
-            outline: 3px solid #8bc1ff;
-            outline-offset: 4px;
-        }
-
-        @media (max-width: 800px) {
-            .steps-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .step {
-                min-height: auto;
-            }
-
-            .cursor-icon-7,
-            .cursor-icon-8 {
-                display: none;
-            }
-        }
-
-        @media (max-width: 640px) {
-            .container {
-                width: min(100% - 32px, 1100px);
-            }
-
-            .hero {
-                min-height: 820px;
-                padding: 72px 16px 95px;
-            }
-
-            h1 {
-                font-size: clamp(2.65rem, 14vw, 4rem);
-            }
-
-            .hero-subtitle {
-                font-size: 0.98rem;
-            }
-
-            .button-group {
-                flex-direction: column;
-                align-items: stretch;
-                width: min(100%, 340px);
-                margin-right: auto;
-                margin-left: auto;
-            }
-
-            .button {
-                width: 100%;
-            }
-
-            .qr-section {
-                transform: scale(0.94);
-            }
-
-            .carpet-scene {
-                height: 160px;
-                transform: scale(0.85);
-                transform-origin: top center;
-            }
-
-            .stick-figure.left {
-                left: 3%;
-            }
-
-            .stick-figure.right {
-                right: 3%;
-            }
-
-            .cursor-icon,
-            .shooting-star.two {
-                display: none;
-            }
-
-            .install-section {
-                padding-right: 16px;
-                padding-left: 16px;
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
-                scroll-behavior: auto !important;
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-
-            .rogue-cursor,
-            .magic-puff {
-                display: none;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MouseLocator – Never Lose Your Cursor Again</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    overflow-x: hidden;
+    color: #eef4ff;
+    background: #080b12;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+a {
+    color: inherit;
+}
+
+.hero {
+    position: relative;
+    min-height: 100vh;
+    overflow: hidden;
+    padding: 90px 20px 100px;
+    text-align: center;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(40, 115, 255, .2), transparent 420px),
+        radial-gradient(circle at 80% 30%, rgba(255, 45, 87, .13), transparent 380px),
+        linear-gradient(135deg, #080b12, #141b2a 55%, #080b12);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 10;
+    width: min(760px, 100%);
+    margin: 0 auto;
+}
+
+.eyebrow {
+    display: inline-block;
+    margin-bottom: 22px;
+    padding: 7px 13px;
+    border: 1px solid rgba(120, 180, 255, .35);
+    border-radius: 999px;
+    color: #9bc7ff;
+    background: rgba(45, 108, 210, .15);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+}
+
+h1 {
+    margin: 0 auto 24px;
+    color: #fff;
+    font-size: clamp(42px, 8vw, 88px);
+    line-height: .98;
+    letter-spacing: -.06em;
+}
+
+.hero-subtitle {
+    max-width: 660px;
+    margin: 0 auto 38px;
+    color: #aab5c7;
+    font-size: clamp(16px, 2.4vw, 20px);
+    line-height: 1.7;
+}
+
+.hero-subtitle strong {
+    color: #c5ddff;
+}
+
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 42px;
+}
+
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    padding: 14px 24px;
+    border-radius: 12px;
+    font-weight: 800;
+    text-decoration: none;
+    transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.button:hover {
+    transform: translateY(-3px);
+}
+
+.primary {
+    min-width: 225px;
+    background: linear-gradient(135deg, #64adff, #236be5);
+    box-shadow: 0 14px 32px rgba(35, 107, 229, .35);
+}
+
+.secondary {
+    min-width: 190px;
+    border: 1px solid rgba(255, 255, 255, .22);
+    background: rgba(255, 255, 255, .06);
+}
+
+.secondary:hover {
+    box-shadow: 0 12px 25px rgba(0, 0, 0, .25);
+}
+
+/* Floating background cursors */
+.bg-cursor {
+    position: absolute;
+    z-index: 1;
+    color: white;
+    opacity: .22;
+    font-size: 42px;
+    animation: drift 7s ease-in-out infinite;
+}
+
+.bg-cursor:hover {
+    opacity: 1;
+    color: #ff66a7;
+    text-shadow: 0 0 18px currentColor;
+}
+
+.bg1 { top: 12%; left: 6%; }
+.bg2 { top: 22%; right: 8%; animation-delay: -2s; }
+.bg3 { bottom: 20%; left: 8%; animation-delay: -4s; }
+.bg4 { bottom: 15%; right: 7%; animation-delay: -1s; }
+.bg5 { top: 47%; left: 3%; font-size: 32px; animation-delay: -3s; }
+.bg6 { top: 50%; right: 4%; font-size: 36px; animation-delay: -5s; }
+
+@keyframes drift {
+    0%, 100% {
+        transform: translate(0, 0) rotate(-8deg);
+    }
+
+    50% {
+        transform: translate(12px, -20px) rotate(8deg);
+    }
+}
+
+/* Rogue cursor */
+.rogue {
+    position: fixed;
+    z-index: 80;
+    width: 30px;
+    height: 40px;
+    pointer-events: none;
+    font-size: 34px;
+    line-height: 1;
+    color: #ff586c;
+    text-shadow: 0 0 10px #ff334f, 0 0 20px #7f4cff;
+    animation: rogue-move 17s ease-in-out infinite;
+}
+
+@keyframes rogue-move {
+    0% {
+        top: 20vh;
+        left: 8vw;
+        transform: rotate(-15deg);
+    }
+
+    20% {
+        top: 70vh;
+        left: 78vw;
+        transform: rotate(25deg);
+    }
+
+    42% {
+        top: 18vh;
+        left: 80vw;
+        transform: rotate(-20deg);
+    }
+
+    63% {
+        top: 68vh;
+        left: 20vw;
+        transform: rotate(16deg);
+    }
+
+    82% {
+        top: 38vh;
+        left: 52vw;
+        transform: rotate(-12deg);
+    }
+
+    100% {
+        top: 20vh;
+        left: 8vw;
+        transform: rotate(-15deg);
+    }
+}
+
+/* Fast cursor rockets */
+.cursor-rocket {
+    position: absolute;
+    z-index: 3;
+    width: 30px;
+    height: 42px;
+    color: #78baff;
+    font-size: 34px;
+    line-height: 1;
+    pointer-events: none;
+    filter: drop-shadow(0 0 8px #65aaff);
+    animation: rocket-fly 4.5s linear infinite;
+}
+
+.cursor-rocket::after {
+    content: "";
+    position: absolute;
+    top: 30px;
+    left: -28px;
+    width: 46px;
+    height: 13px;
+    border-radius: 50%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        #ff3f30 25%,
+        #ff9d35 60%,
+        #ffeaa0
+    );
+    filter: blur(3px);
+    animation: flame 0.13s ease-in-out infinite alternate;
+}
+
+.rocket1 { top: 14%; left: -60px; animation-delay: -.4s; }
+.rocket2 { top: 33%; left: -60px; font-size: 28px; animation-delay: -2s; }
+.rocket3 { top: 57%; left: -60px; font-size: 25px; animation-delay: -3.2s; }
+.rocket4 { top: 76%; left: -60px; font-size: 31px; animation-delay: -1.6s; }
+
+@keyframes rocket-fly {
+    0% {
+        left: -70px;
+        opacity: 0;
+        transform: translateY(25px) rotate(-18deg);
+    }
+
+    8% {
+        opacity: 1;
+    }
+
+    42% {
+        transform: translateY(-25px) rotate(-10deg);
+    }
+
+    76% {
+        transform: translateY(22px) rotate(-20deg);
+        opacity: 1;
+    }
+
+    100% {
+        left: calc(100% + 70px);
+        opacity: 0;
+        transform: translateY(-18px) rotate(-15deg);
+    }
+}
+
+@keyframes flame {
+    from {
+        width: 34px;
+        opacity: .65;
+    }
+
+    to {
+        width: 62px;
+        opacity: 1;
+    }
+}
+
+/* Red carpet scene */
+.scene {
+    position: relative;
+    width: min(600px, 100%);
+    height: 245px;
+    margin: 0 auto;
+}
+
+.carpet {
+    position: absolute;
+    right: 4%;
+    bottom: 22px;
+    left: 4%;
+    height: 84px;
+    border: 3px solid #f0b65d;
+    border-radius: 12px;
+    transform: perspective(500px) rotateX(48deg);
+    background:
+        repeating-linear-gradient(
+            90deg,
+            rgba(255,255,255,.04) 0 28px,
+            transparent 28px 56px
+        ),
+        linear-gradient(90deg, #54121e, #d52e42, #54121e);
+    box-shadow:
+        0 17px 0 #3d1018,
+        0 25px 35px rgba(0,0,0,.55);
+}
+
+.carpet-title {
+    position: absolute;
+    right: 4%;
+    bottom: 0;
+    z-index: 20;
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: #ffd9d9;
+    background: rgba(64, 8, 17, .9);
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: .08em;
+}
+
+/* Actual cursors moving on carpet */
+.carpet-cursor {
+    position: absolute;
+    z-index: 15;
+    color: #fff;
+    font-size: 30px;
+    line-height: 1;
+    text-shadow: 2px 4px 5px rgba(0,0,0,.5);
+}
+
+.carpet-run1 {
+    bottom: 76px;
+    left: 5%;
+    animation: carpet-one 5s ease-in-out infinite;
+}
+
+.carpet-run2 {
+    bottom: 50px;
+    left: 8%;
+    font-size: 25px;
+    animation: carpet-two 6s ease-in-out infinite;
+}
+
+.carpet-run3 {
+    bottom: 65px;
+    left: 10%;
+    font-size: 20px;
+    animation: carpet-three 7s ease-in-out infinite;
+}
+
+.carpet-placed1 {
+    bottom: 58px;
+    left: 44%;
+    animation: placed-one 5.4s ease-in-out infinite;
+}
+
+.carpet-placed2 {
+    bottom: 52px;
+    left: 55%;
+    font-size: 25px;
+    animation: placed-two 6.2s ease-in-out infinite;
+}
+
+@keyframes carpet-one {
+    0% { left: 5%; opacity: 0; transform: rotate(-20deg); }
+    12% { opacity: 1; }
+    48% { left: 48%; transform: rotate(10deg); }
+    78% { left: 78%; transform: rotate(-12deg); }
+    100% { left: 96%; opacity: 0; }
+}
+
+@keyframes carpet-two {
+    0% { left: 8%; opacity: 0; transform: rotate(15deg); }
+    15% { opacity: 1; }
+    48% { left: 36%; transform: rotate(-12deg); }
+    78% { left: 72%; transform: rotate(10deg); }
+    100% { left: 97%; opacity: 0; }
+}
+
+@keyframes carpet-three {
+    0% { left: 10%; opacity: 0; transform: rotate(-8deg); }
+    18% { opacity: 1; }
+    52% { left: 55%; transform: rotate(12deg); }
+    100% { left: 96%; opacity: 0; }
+}
+
+@keyframes placed-one {
+    0%, 20% {
+        opacity: 0;
+        transform: translate(-70px, -45px) rotate(12deg);
+    }
+
+    35% {
+        opacity: 1;
+    }
+
+    55%, 100% {
+        opacity: 1;
+        transform: translate(0, 0) rotate(12deg);
+    }
+}
+
+@keyframes placed-two {
+    0%, 25% {
+        opacity: 0;
+        transform: translate(75px, -50px) rotate(-12deg);
+    }
+
+    38% {
+        opacity: 1;
+    }
+
+    58%, 100% {
+        opacity: 1;
+        transform: translate(0, 0) rotate(-12deg);
+    }
+}
+
+/* Human-like cartoon boys */
+.boy {
+    position: absolute;
+    z-index: 18;
+    bottom: 48px;
+    width: 86px;
+    height: 145px;
+    animation: boy-bob 2.4s ease-in-out infinite;
+}
+
+.boy-left {
+    left: 5%;
+}
+
+.boy-right {
+    right: 5%;
+    animation-delay: -1.2s;
+}
+
+.head {
+    position: absolute;
+    top: 0;
+    left: 25px;
+    width: 39px;
+    height: 43px;
+    border: 2px solid #753e35;
+    border-radius: 48%;
+    background: #d9946c;
+}
+
+.head::before {
+    content: "";
+    position: absolute;
+    top: -8px;
+    left: -2px;
+    width: 42px;
+    height: 19px;
+    border-radius: 60% 50% 30% 30%;
+    background: #3d241f;
+}
+
+.head::after {
+    content: "•  •";
+    position: absolute;
+    top: 19px;
+    left: 8px;
+    color: #27191a;
+    font-size: 9px;
+    letter-spacing: 5px;
+}
+
+.body {
+    position: absolute;
+    top: 48px;
+    left: 15px;
+    width: 58px;
+    height: 61px;
+    border: 2px solid #172d62;
+    border-radius: 20px 20px 8px 8px;
+    background: linear-gradient(135deg, #347ee7, #173b90);
+}
+
+.body::after {
+    content: "M";
+    position: absolute;
+    top: 16px;
+    left: 20px;
+    color: rgba(255,255,255,.85);
+    font-size: 20px;
+    font-weight: 900;
+}
+
+.arm {
+    position: absolute;
+    top: 54px;
+    width: 14px;
+    height: 60px;
+    border-radius: 12px;
+    background: #d9946c;
+    transform-origin: top center;
+}
+
+.hand {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #d9946c;
+}
+
+.boy-left .arm-left {
+    left: 7px;
+    animation: left-throw-arm 2.8s ease-in-out infinite;
+}
+
+.boy-left .arm-right {
+    right: 0;
+    animation: left-catch-arm 2.8s ease-in-out infinite;
+}
+
+.boy-right .arm-left {
+    left: 7px;
+    animation: right-catch-arm 3.1s ease-in-out infinite;
+}
+
+.boy-right .arm-right {
+    right: 0;
+    animation: right-throw-arm 3.1s ease-in-out infinite;
+}
+
+.boy-left .hand-left {
+    left: -1px;
+    top: 104px;
+    animation: left-throw-hand 2.8s ease-in-out infinite;
+}
+
+.boy-left .hand-right {
+    right: -5px;
+    top: 103px;
+    animation: left-catch-hand 2.8s ease-in-out infinite;
+}
+
+.boy-right .hand-left {
+    left: -1px;
+    top: 104px;
+    animation: right-catch-hand 3.1s ease-in-out infinite;
+}
+
+.boy-right .hand-right {
+    right: -5px;
+    top: 103px;
+    animation: right-throw-hand 3.1s ease-in-out infinite;
+}
+
+.leg {
+    position: absolute;
+    top: 104px;
+    width: 18px;
+    height: 43px;
+    border-radius: 0 0 10px 10px;
+    background: #26334d;
+}
+
+.leg-left {
+    left: 22px;
+    transform: rotate(5deg);
+}
+
+.leg-right {
+    right: 19px;
+    transform: rotate(-8deg);
+}
+
+.shoe {
+    position: absolute;
+    top: 140px;
+    width: 29px;
+    height: 12px;
+    border-radius: 14px 14px 5px 5px;
+    background: #edf2fa;
+    box-shadow: inset 0 -4px 0 #7e8a9f;
+}
+
+.shoe-left {
+    left: 10px;
+}
+
+.shoe-right {
+    right: 6px;
+}
+
+.boy-label {
+    position: absolute;
+    top: -27px;
+    left: 0;
+    padding: 3px 7px;
+    border: 1px solid rgba(255,220,160,.3);
+    border-radius: 5px;
+    color: #ffe0af;
+    background: rgba(52,26,19,.9);
+    font-size: 10px;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+@keyframes boy-bob {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-4px);
+    }
+}
+
+@keyframes left-throw-arm {
+    0%, 100% { transform: rotate(35deg); }
+    32% { transform: rotate(76deg); }
+    50% { transform: rotate(108deg); }
+    70% { transform: rotate(55deg); }
+}
+
+@keyframes left-catch-arm {
+    0%, 100% { transform: rotate(-55deg); }
+    38% { transform: rotate(-83deg); }
+    55% { transform: rotate(-108deg); }
+    78% { transform: rotate(-60deg); }
+}
+
+@keyframes right-throw-arm {
+    0%, 100% { transform: rotate(-55deg); }
+    30% { transform: rotate(-104deg); }
+    48% { transform: rotate(-78deg); }
+    72% { transform: rotate(-52deg); }
+}
+
+@keyframes right-catch-arm {
+    0%, 100% { transform: rotate(35deg); }
+    35% { transform: rotate(105deg); }
+    54% { transform: rotate(78deg); }
+    77% { transform: rotate(40deg); }
+}
+
+@keyframes left-throw-hand {
+    0%, 100% { transform: translate(0,0); }
+    32% { transform: translate(20px,-16px); }
+    50% { transform: translate(29px,-26px); }
+    70% { transform: translate(9px,-8px); }
+}
+
+@keyframes left-catch-hand {
+    0%, 100% { transform: translate(0,0); }
+    38% { transform: translate(-6px,-10px); }
+    55% { transform: translate(-12px,-19px); }
+    78% { transform: translate(-2px,-5px); }
+}
+
+@keyframes right-throw-hand {
+    0%, 100% { transform: translate(0,0); }
+    30% { transform: translate(-24px,-20px); }
+    48% { transform: translate(-14px,-10px); }
+    72% { transform: translate(0,0); }
+}
+
+@keyframes right-catch-hand {
+    0%, 100% { transform: translate(0,0); }
+    35% { transform: translate(15px,-22px); }
+    54% { transform: translate(25px,-12px); }
+    77% { transform: translate(5px,-3px); }
+}
+
+/* Magical cursor puff */
+.magic-puff {
+    position: fixed;
+    z-index: 100;
+    width: 20px;
+    height: 20px;
+    pointer-events: none;
+    opacity: 0;
+    transform: translate(-50%, -50%);
+    transition: opacity .3s ease;
+}
+
+.magic-puff.show {
+    opacity: 1;
+}
+
+.magic-puff i {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 0 9px #fff, 0 0 16px #83bdff;
+    animation: puff 1.1s ease-out infinite;
+}
+
+.magic-puff i:nth-child(1) {
+    --x: -18px;
+    --y: -12px;
+    background: #8ec5ff;
+}
+
+.magic-puff i:nth-child(2) {
+    --x: 17px;
+    --y: -9px;
+    background: #d6a5ff;
+    animation-delay: -.22s;
+}
+
+.magic-puff i:nth-child(3) {
+    --x: 18px;
+    --y: 14px;
+    background: #ffd166;
+    animation-delay: -.44s;
+}
+
+.magic-puff i:nth-child(4) {
+    --x: -15px;
+    --y: 17px;
+    background: #ff91c8;
+    animation-delay: -.66s;
+}
+
+@keyframes puff {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(.3);
+    }
+
+    25% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(
+            calc(-50% + var(--x)),
+            calc(-50% + var(--y))
+        ) scale(1.1);
+    }
+}
+
+/* QR section */
+.qr-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    width: fit-content;
+    margin: 0 auto;
+    padding: 12px 16px 12px 12px;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 16px;
+    background: rgba(255,255,255,.04);
+}
+
+.qr-link {
+    display: block;
+    line-height: 0;
+}
+
+.qr {
+    width: 94px;
+    height: 94px;
+    padding: 6px;
+    border-radius: 10px;
+    background: #fff;
+    transition: transform .3s ease;
+}
+
+.qr-link:hover .qr {
+    transform: scale(1.05) rotate(3deg);
+}
+
+.qr-copy {
+    text-align: left;
+}
+
+.qr-copy strong {
+    display: block;
+    margin-bottom: 4px;
+}
+
+.qr-copy small {
+    color: #8993a6;
+}
+
+/* Scroll indicator */
+.scroll-cue {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    z-index: 12;
+    color: #8b98ac;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: .1em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transform: translateX(-50%);
+}
+
+.scroll-box {
+    position: relative;
+    width: 25px;
+    height: 42px;
+    margin: 7px auto 0;
+    border: 1px solid rgba(255,255,255,.3);
+    border-radius: 20px;
+}
+
+.scroll-box::after {
+    content: "";
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    width: 5px;
+    height: 9px;
+    border-radius: 5px;
+    background: #fff;
+    transform: translateX(-50%);
+    animation: scroll-wheel 1.8s ease-in-out infinite;
+}
+
+@keyframes scroll-wheel {
+    0%, 100% {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+
+    55% {
+        transform: translate(-50%, 13px);
+        opacity: .2;
+    }
+}
+
+/* Instructions */
+.install {
+    position: relative;
+    overflow: hidden;
+    padding: 110px 20px 120px;
+    background:
+        linear-gradient(rgba(90,162,255,.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(90,162,255,.055) 1px, transparent 1px),
+        linear-gradient(180deg, #0b101a, #080b12);
+    background-size: 42px 42px, 42px 42px, auto;
+}
+
+.install::after {
+    content: "⚙";
+    position: absolute;
+    right: -50px;
+    top: 70px;
+    color: rgba(90,162,255,.08);
+    font-size: 360px;
+    line-height: 1;
+    animation: slow-spin 25s linear infinite;
+}
+
+@keyframes slow-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.heading {
+    position: relative;
+    z-index: 2;
+    max-width: 700px;
+    margin: 0 auto 56px;
+    text-align: center;
+}
+
+.kicker {
+    margin-bottom: 10px;
+    color: #72adff;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+}
+
+h2 {
+    margin: 0 0 14px;
+    color: #fff;
+    font-size: clamp(34px, 5vw, 52px);
+    line-height: 1.05;
+    letter-spacing: -.045em;
+}
+
+.heading p {
+    color: var(--muted);
+}
+
+.steps {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+    width: min(1100px, 100%);
+    margin: 0 auto;
+}
+
+.step {
+    position: relative;
+    min-height: 290px;
+    padding: 28px;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 18px;
+    background: rgba(15,22,36,.9);
+    box-shadow: 0 18px 40px rgba(0,0,0,.2);
+    transition: transform .3s ease, border-color .3s ease;
+}
+
+.step:hover {
+    border-color: rgba(90,162,255,.55);
+    transform: translateY(-7px);
+}
+
+.step-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 22px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #5da7ff, #236ee8);
+    font-size: 20px;
+    font-weight: 900;
+}
+
+.step h3 {
+    margin: 0 0 12px;
+    font-size: 20px;
+}
+
+.step p {
+    color: #a8b1c0;
+    font-size: 15px;
+    line-height: 1.75;
+}
+
+.step strong {
+    color: #edf3ff;
+}
+
+.step code {
+    padding: 3px 6px;
+    border-radius: 5px;
+    color: #9fc7ff;
+    background: rgba(90,162,255,.1);
+    font-family: monospace;
+}
+
+/* Footer */
+footer {
+    padding: 52px 20px;
+    border-top: 1px solid rgba(255,255,255,.08);
+    color: #7e8797;
+    text-align: center;
+    background: #06080d;
+}
+
+footer p {
+    margin: 7px 0;
+    font-size: 14px;
+}
+
+footer a {
+    color: #83b9ff;
+    text-decoration: none;
+}
+
+@media (max-width: 800px) {
+    .steps {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .container {
+        width: calc(100% - 32px);
+    }
+
+    .hero {
+        min-height: 820px;
+        padding: 70px 16px 100px;
+    }
+
+    .buttons {
+        flex-direction: column;
+        width: min(340px, 100%);
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+    .button {
+        width: 100%;
+    }
+
+    .scene {
+        height: 205px;
+        transform: scale(.78);
+        transform-origin: top center;
+    }
+
+    .qr-section {
+        transform: scale(.94);
+    }
+
+    .bg-cursor {
+        display: none;
+    }
+
+    .rocket4 {
+        display: none;
+    }
+
+    .install {
+        padding-right: 16px;
+        padding-left: 16px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+    }
+
+    .rogue,
+    .magic-puff,
+    .cursor-rocket {
+        display: none;
+    }
+}
+</style>
 </head>
 
 <body>
-    <div class="ambient" aria-hidden="true"></div>
 
-    <!-- Rogue cursor -->
-    <div class="rogue-cursor" aria-hidden="true">
-        <span class="rogue-cursor-label">ROGUE</span>
+<div class="rogue" aria-hidden="true">➤</div>
+
+<div class="magic-puff" aria-hidden="true">
+    <i></i>
+    <i></i>
+    <i></i>
+    <i></i>
+</div>
+
+<section class="hero" id="top">
+
+    <span class="bg-cursor bg1" aria-hidden="true">➤</span>
+    <span class="bg-cursor bg2" aria-hidden="true">➤</span>
+    <span class="bg-cursor bg3" aria-hidden="true">➤</span>
+    <span class="bg-cursor bg4" aria-hidden="true">➤</span>
+    <span class="bg-cursor bg5" aria-hidden="true">➤</span>
+    <span class="bg-cursor bg6" aria-hidden="true">➤</span>
+
+    <div class="cursor-rocket rocket1" aria-hidden="true">
+        ➤
+        <span class="flame"></span>
+        <span class="spark"></span>
+        <span class="spark two"></span>
     </div>
 
-    <!-- Magical puff that follows the user's cursor -->
-    <div class="magic-puff" aria-hidden="true">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
+    <div class="cursor-rocket rocket2" aria-hidden="true">
+        ➤
+        <span class="flame"></span>
+        <span class="spark"></span>
+        <span class="spark two"></span>
     </div>
 
-    <!-- Floating colorful cursors -->
-    <svg class="cursor-icon cursor-icon-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-        <path d="M3 3l7.07 18.97a.5.5 0 0 0 .86.04l2.05-7.03a.5.5 0 0 1 .32-.32l7.05-2.05a.5.5 0 0 0 .04-.86L3 3z"></path>
-    </svg>
+    <div class="cursor-rocket rocket3" aria-hidden="true">
+        ➤
+        <span class="flame"></span>
+        <span class="spark"></span>
+        <span class="spark two"></span>
+    </div>
 
-    <svg class="cursor-icon cursor-icon-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-        <path d="M3 3l7.07 18.97a.5.5 0 0 0 .86.04l2.05-7.03a.5.5 0 0 1 .32-.32l7.05-2.05a.5.5 0 0 0 .04-.86L3 3z"></path>
-    </svg>
+    <div class="cursor-rocket rocket4" aria-hidden="true">
+        ➤
+        <span class="flame"></span>
+        <span class="spark"></span>
+        <span class="spark two"></span>
+    </div>
 
-    <svg class="cursor-icon cursor-icon-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-        <path d="M3 3l7.07 18.97a.5.5 0 0 0 .86.04l2.05-7.03a.5.5 0 0 1 .32-.32l7.05-2.05a.5.5 0 0 0 .04-.86L3 3z"></path>
-    </svg>
+    <div class="hero-content">
+        <div class="eyebrow">A tiny macOS utility with one job</div>
 
-    <svg class="cursor-icon cursor-icon-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-        <path d="M3 3l7.07 18.97a.5.5 0 0 0 .86.04l2.05-7.03a.5.5 0 0 1 .32-.32l7.05-2.05a.5.5 0 0 0 .04-.86L3 3z"></path>
-    </svg>
+        <h1>Never lose your mouse cursor again.</h1>
 
-    <svg class="cursor-icon cursor-icon-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-        <path d="M3 3l7.07 18.97a.5.5 0 0 0 .86.04l2.05-7.03a.5.5 0 0 1 .32-.32l7.05-2.05a.5.5 0 0 0 .04-.86L3 3z"></path>
-    </svg>
+        <p class="hero-subtitle">
+            Instantly teleport your cursor to the exact center of your screen with a quick
+            <strong>trackpad shake</strong> or <strong>Cmd + Shift + M</strong>.
+            Runs silently in the background on macOS.
+        </p>
 
-    <svg class="cursor-icon cursor-icon-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-        <path d="M3 3l7.07 18.97a.5.5 0 0 0 .86.04l2.05-7.03a.5.5 0 0 1 .32-.32l7.05-2.05a.5.5 0 0 0 .04-.86L3 3z"></path>
-    </svg>
-
-    <svg class="cursor-icon cursor-icon-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-        <path d="M3 3l7.07 18.97a.5.5 0 0 0 .86.04l2.05-7.03a.5.5 0 0 1 .32-.32l7.05-2.05a.5.5 0 0 0 .04-.86L3 3z"></path>
-    </svg>
-
-    <svg class="cursor-icon cursor-icon-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-        <path d="M3 3l7.07 18.97a.5.5 0 0 0 .86.04l2.05-7.03a.5.5 0 0 1 .32-.32l7.05-2.05a.5.5 0 0 0 .04-.86L3 3z"></path>
-    </svg>
-
-    <main>
-        <section class="hero" id="top">
-            <div class="shooting-star one" aria-hidden="true"></div>
-            <div class="shooting-star two" aria-hidden="true"></div>
-
-            <div class="hero-content">
-                <div class="eyebrow">A tiny macOS utility with one job</div>
-
-                <h1>Never lose your mouse cursor again.</h1>
-
-                <p class="hero-subtitle">
-                    Instantly teleport your cursor to the exact center of your screen with a quick
-                    <strong>trackpad shake</strong> or <strong>Cmd + Shift + M</strong>.
-                    Runs silently in the background on macOS.
-                </p>
-
-                <div class="button-group">
-                    <a
-                        href="https://github.com/yoavharari/mouselocator/releases/download/v1.0.0/MouseLocator.zip"
-                        download
-                        class="button button-primary"
-                    >
-                        Download for macOS — Free
-                    </a>
-
-                    <a
-                        href="https://paypal.me/yoavharari"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        class="button button-secondary"
-                    >
-                        Donate via PayPal
-                    </a>
-                </div>
-
-                <div class="carpet-scene" aria-hidden="true">
-                    <div class="carpet"></div>
-                    <div class="carpet-label">Official cursor runway</div>
-
-                    <div class="scene-cursor one"></div>
-                    <div class="scene-cursor two"></div>
-                    <div class="scene-cursor three"></div>
-
-                    <div class="stick-figure left">
-                        <span class="catch-label">gotcha?</span>
-                        <span class="stick-head"></span>
-                        <span class="stick-body"></span>
-                        <span class="stick-arm one"></span>
-                        <span class="stick-arm two"></span>
-                        <span class="stick-leg one"></span>
-                        <span class="stick-leg two"></span>
-                    </div>
-
-                    <div class="stick-figure right">
-                        <span class="catch-label">come back!</span>
-                        <span class="stick-head"></span>
-                        <span class="stick-body"></span>
-                        <span class="stick-arm one"></span>
-                        <span class="stick-arm two"></span>
-                        <span class="stick-leg one"></span>
-                        <span class="stick-leg two"></span>
-                    </div>
-                </div>
-
-                <div class="qr-section">
-                    <img src="paypal-qr.png" alt="PayPal QR Code" class="qr-image">
-
-                    <div class="qr-copy">
-                        <strong>Enjoying MouseLocator?</strong>
-                        <p class="qr-text">Scan with your phone to leave a tip.</p>
-                    </div>
-                </div>
-            </div>
-
-            <a class="scroll-cue" href="#install" aria-label="Scroll down to installation instructions">
-                <span>Scroll for setup</span>
-
-                <span class="scroll-track">
-                    <span class="scroll-cursor"></span>
-                </span>
-            </a>
-        </section>
-
-        <section class="install-section" id="install">
-            <div class="container">
-                <div class="section-heading">
-                    <div class="section-kicker">Three quick steps</div>
-
-                    <h2 class="section-title">Ready in under a minute.</h2>
-
-                    <p class="section-intro">
-                        Install it once, grant macOS the permissions it needs, and let your cursor stop hiding.
-                    </p>
-                </div>
-
-                <div class="steps-grid">
-                    <article class="step">
-                        <div class="step-icon" aria-hidden="true">⇩</div>
-                        <div class="step-badge">1</div>
-
-                        <h3 class="step-title">Unzip</h3>
-
-                        <p class="step-description">
-                            Extract the downloaded <code>MouseLocator.zip</code> file and drag
-                            <code>MouseLocator.app</code> into your <strong>Applications</strong> folder.
-                        </p>
-                    </article>
-
-                    <article class="step">
-                        <div class="step-icon" aria-hidden="true">⌘</div>
-                        <div class="step-badge">2</div>
-
-                        <h3 class="step-title">Bypass Gatekeeper</h3>
-
-                        <p class="step-description">
-                            Double-click the app. If macOS says <em>“Apple could not verify…”</em>,
-                            click <strong>Done</strong>. Then open
-                            <strong>System Settings → Privacy &amp; Security</strong>, scroll to the security section,
-                            and click <strong>Open Anyway</strong>.
-                        </p>
-                    </article>
-
-                    <article class="step">
-                        <div class="step-icon" aria-hidden="true">✓</div>
-                        <div class="step-badge">3</div>
-
-                        <h3 class="step-title">Grant Permissions</h3>
-
-                        <p class="step-description">
-                            In <strong>System Settings → Privacy &amp; Security</strong>, add MouseLocator to both:
-                            <br><br>
-                            • <strong>Accessibility</strong> — needed to move the mouse.<br>
-                            • <strong>Input Monitoring</strong> — needed for the hotkey.
-                        </p>
-                    </article>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <p class="footer-text">&copy; 2026 MouseLocator. All rights reserved.</p>
-
-        <p class="footer-text">
-            Have a question?
+        <div class="buttons">
             <a
+                class="button primary"
+                href="https://github.com/yoavharari/mouselocator/releases/download/v1.0.0/MouseLocator.zip"
+                download
+            >
+                Download for macOS — Free
+            </a>
+
+            <a
+                class="button secondary"
                 href="https://paypal.me/yoavharari"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="footer-link"
             >
-                Get in touch
+                Donate via PayPal
             </a>
+        </div>
+
+        <div class="scene" aria-label="Two boys playing catch with cursors on a red carpet">
+
+            <div class="carpet"></div>
+            <div class="carpet-title">Official cursor runway</div>
+
+            <span class="carpet-cursor carpet-run1">➤</span>
+            <span class="carpet-cursor carpet-run2">➤</span>
+            <span class="carpet-cursor carpet-run3">➤</span>
+            <span class="carpet-cursor carpet-placed1">➤</span>
+            <span class="carpet-cursor carpet-placed2">➤</span>
+
+            <div class="boy boy-left">
+                <span class="boy-label">Catch it!</span>
+                <span class="head"></span>
+                <span class="body"></span>
+                <span class="arm arm-left"></span>
+                <span class="arm arm-right"></span>
+                <span class="hand hand-left"></span>
+                <span class="hand hand-right"></span>
+                <span class="leg leg-left"></span>
+                <span class="leg leg-right"></span>
+                <span class="shoe shoe-left"></span>
+                <span class="shoe shoe-right"></span>
+            </div>
+
+            <div class="boy boy-right">
+                <span class="boy-label">Put it there!</span>
+                <span class="head"></span>
+                <span class="body"></span>
+                <span class="arm arm-left"></span>
+                <span class="arm arm-right"></span>
+                <span class="hand hand-left"></span>
+                <span class="hand hand-right"></span>
+                <span class="leg leg-left"></span>
+                <span class="leg leg-right"></span>
+                <span class="shoe shoe-left"></span>
+                <span class="shoe shoe-right"></span>
+            </div>
+        </div>
+
+        <div class="qr-section">
+            <a
+                class="qr-link"
+                href="https://paypal.me/yoavharari"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Open PayPal donation page"
+            >
+                <img
+                    class="qr"
+                    src="paypal-qr.png"
+                    alt="Scan to donate through PayPal"
+                >
+            </a>
+
+            <div class="qr-copy">
+                <strong>Enjoying MouseLocator?</strong>
+                <small>Scan with your phone to leave a tip.</small>
+            </div>
+        </div>
+    </div>
+
+    <a class="scroll-cue" href="#install">
+        Scroll for setup
+        <span class="scroll-box"></span>
+    </a>
+</section>
+
+<section class="install" id="install">
+    <div class="heading">
+        <div class="kicker">Cursor control center</div>
+
+        <h2>Ready in under a minute.</h2>
+
+        <p>
+            Install it once, grant macOS the permissions it needs,
+            and let your cursor stop hiding.
         </p>
-    </footer>
+    </div>
 
-    <script>
-        (() => {
-            const puff = document.querySelector(".magic-puff");
+    <div class="steps">
+        <article class="step">
+            <div class="step-number">1</div>
+            <h3>Unzip</h3>
+            <p>
+                Extract the downloaded <code>MouseLocator.zip</code> file and drag
+                <code>MouseLocator.app</code> into your <strong>Applications</strong> folder.
+            </p>
+        </article>
 
-            if (
-                !puff ||
-                window.matchMedia("(prefers-reduced-motion: reduce)").matches
-            ) {
-                return;
-            }
+        <article class="step">
+            <div class="step-number">2</div>
+            <h3>Bypass Gatekeeper</h3>
+            <p>
+                Double-click the app. If macOS says
+                <em>“Apple could not verify…”</em>, click <strong>Done</strong>.
+                Then open <strong>System Settings → Privacy &amp; Security</strong>
+                and click <strong>Open Anyway</strong>.
+            </p>
+        </article>
 
-            let targetX = window.innerWidth / 2;
-            let targetY = window.innerHeight / 2;
-            let currentX = targetX;
-            let currentY = targetY;
-            let hasMoved = false;
+        <article class="step">
+            <div class="step-number">3</div>
+            <h3>Grant Permissions</h3>
+            <p>
+                In <strong>System Settings → Privacy &amp; Security</strong>,
+                add MouseLocator to both:
+                <br><br>
+                • <strong>Accessibility</strong> — needed to move the mouse.<br>
+                • <strong>Input Monitoring</strong> — needed for the hotkey.
+            </p>
+        </article>
+    </div>
+</section>
 
-            window.addEventListener(
-                "pointermove",
-                (event) => {
-                    targetX = event.clientX;
-                    targetY = event.clientY;
+<footer>
+    <p>&copy; 2026 MouseLocator. All rights reserved.</p>
+    <p>
+        Have a question?
+        <a
+            href="https://paypal.me/yoavharari"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            Get in touch
+        </a>
+    </p>
+</footer>
 
-                    if (!hasMoved) {
-                        hasMoved = true;
-                        puff.classList.add("visible");
-                    }
-                },
-                { passive: true }
-            );
+<script>
+(function () {
+    var puff = document.querySelector(".magic-puff");
 
-            function animatePuff() {
-                currentX += (targetX - currentX) * 0.18;
-                currentY += (targetY - currentY) * 0.18;
+    if (!puff || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        return;
+    }
 
-                puff.style.left = `${currentX}px`;
-                puff.style.top = `${currentY}px`;
+    var targetX = window.innerWidth / 2;
+    var targetY = window.innerHeight / 2;
+    var currentX = targetX;
+    var currentY = targetY;
+    var hasMoved = false;
 
-                requestAnimationFrame(animatePuff);
-            }
+    window.addEventListener("pointermove", function (event) {
+        targetX = event.clientX;
+        targetY = event.clientY;
 
-            animatePuff();
+        if (!hasMoved) {
+            hasMoved = true;
+            puff.classList.add("show");
+        }
+    }, { passive: true });
 
-            window.addEventListener("blur", () => {
-                puff.classList.remove("visible");
-            });
+    function movePuff() {
+        currentX += (targetX - currentX) * 0.18;
+        currentY += (targetY - currentY) * 0.18;
 
-            window.addEventListener("focus", () => {
-                if (hasMoved) {
-                    puff.classList.add("visible");
-                }
-            });
-        })();
-    </script>
+        puff.style.left = currentX + "px";
+        puff.style.top = currentY + "px";
+
+        window.requestAnimationFrame(movePuff);
+    }
+
+    movePuff();
+
+    window.addEventListener("blur", function () {
+        puff.classList.remove("show");
+    });
+
+    window.addEventListener("focus", function () {
+        if (hasMoved) {
+            puff.classList.add("show");
+        }
+    });
+})();
+</script>
+
 </body>
 </html>
+```
