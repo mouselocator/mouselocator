@@ -9,9 +9,8 @@
     <style>
         :root {
             --text: #f5f7fb;
-            --muted: #9da6b8;
+            --muted: #a6afbf;
             --blue: #5aa2ff;
-            --border: rgba(255, 255, 255, 0.1);
         }
 
         * {
@@ -29,8 +28,8 @@
             overflow-x: hidden;
             color: var(--text);
             background:
-                radial-gradient(circle at 15% 12%, rgba(53, 105, 255, 0.12), transparent 28rem),
-                radial-gradient(circle at 88% 24%, rgba(244, 63, 94, 0.08), transparent 26rem),
+                radial-gradient(circle at 12% 10%, rgba(40, 100, 255, 0.16), transparent 30rem),
+                radial-gradient(circle at 90% 30%, rgba(218, 46, 78, 0.1), transparent 28rem),
                 linear-gradient(135deg, #080a10 0%, #111622 52%, #080a10 100%);
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
             line-height: 1.6;
@@ -40,61 +39,59 @@
             color: inherit;
         }
 
-        .container {
-            width: min(1100px, calc(100% - 48px));
-            margin: 0 auto;
-        }
-
         .ambient {
             position: fixed;
             inset: 0;
             z-index: -1;
-            overflow: hidden;
             pointer-events: none;
+            overflow: hidden;
         }
 
         .ambient::before,
         .ambient::after {
             content: "";
             position: absolute;
-            width: 420px;
-            height: 420px;
+            width: 380px;
+            height: 380px;
             border-radius: 50%;
-            filter: blur(25px);
+            filter: blur(35px);
             opacity: 0.16;
         }
 
         .ambient::before {
-            top: 18%;
+            top: 12%;
             left: -180px;
             background: #2563eb;
         }
 
         .ambient::after {
-            right: -190px;
-            bottom: 10%;
+            right: -170px;
+            bottom: 12%;
             background: #dc2626;
         }
 
-        /* Floating colorful cursor icons */
+        .container {
+            width: min(1100px, calc(100% - 48px));
+            margin: 0 auto;
+        }
+
+        /* Floating cursors */
         .cursor-icon {
             position: absolute;
             z-index: 3;
             width: 48px;
             height: 48px;
-            color: white;
+            color: #fff;
             opacity: 0.2;
             pointer-events: auto;
             cursor: pointer;
+            animation: gentle-float 7s ease-in-out infinite;
             transition: opacity 0.3s ease, filter 0.3s ease;
-            animation: float 7s ease-in-out infinite;
         }
 
         .cursor-icon:hover {
             opacity: 1;
-            animation:
-                rainbow-glow 2s linear infinite,
-                float 4s ease-in-out infinite;
+            animation: rainbow 2s linear infinite, gentle-float 4s ease-in-out infinite;
         }
 
         .cursor-icon-1 { top: 12%; left: 6%; width: 56px; height: 56px; }
@@ -106,17 +103,17 @@
         .cursor-icon-7 { top: 8%; right: 25%; width: 42px; height: 42px; animation-delay: -0.8s; }
         .cursor-icon-8 { bottom: 8%; left: 30%; animation-delay: -1.8s; }
 
-        @keyframes float {
+        @keyframes gentle-float {
             0%, 100% {
-                transform: translate(0, 0) rotate(0);
+                transform: translate(0, 0);
             }
 
             50% {
-                transform: translate(8px, -18px) rotate(5deg);
+                transform: translate(8px, -18px);
             }
         }
 
-        @keyframes rainbow-glow {
+        @keyframes rainbow {
             0% {
                 color: #ff3b30;
                 filter: drop-shadow(0 0 12px #ff3b30);
@@ -150,7 +147,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 90px 24px 70px;
+            padding: 90px 24px 90px;
             overflow: hidden;
             isolation: isolate;
         }
@@ -158,9 +155,9 @@
         .hero::after {
             content: "";
             position: absolute;
-            left: 0;
             right: 0;
-            bottom: -1px;
+            bottom: 0;
+            left: 0;
             height: 180px;
             z-index: -1;
             background: linear-gradient(to bottom, transparent, #080a10);
@@ -169,7 +166,7 @@
 
         .hero-content {
             position: relative;
-            z-index: 5;
+            z-index: 10;
             width: min(800px, 100%);
             text-align: center;
         }
@@ -180,10 +177,10 @@
             gap: 8px;
             margin-bottom: 22px;
             padding: 7px 13px;
-            border: 1px solid rgba(90, 162, 255, 0.28);
+            border: 1px solid rgba(90, 162, 255, 0.3);
             border-radius: 999px;
             color: #a9ccff;
-            background: rgba(31, 83, 170, 0.14);
+            background: rgba(31, 83, 170, 0.15);
             font-size: 0.78rem;
             font-weight: 700;
             letter-spacing: 0.12em;
@@ -202,7 +199,7 @@
         h1 {
             max-width: 780px;
             margin: 0 auto 24px;
-            color: #ffffff;
+            color: #fff;
             font-size: clamp(2.7rem, 8vw, 5.5rem);
             font-weight: 780;
             letter-spacing: -0.065em;
@@ -219,7 +216,6 @@
 
         .hero-subtitle strong {
             color: #b9d6ff;
-            font-weight: 700;
         }
 
         .button-group {
@@ -240,10 +236,7 @@
             font-size: 0.98rem;
             font-weight: 700;
             text-decoration: none;
-            transition:
-                transform 0.25s ease,
-                box-shadow 0.25s ease,
-                border-color 0.25s ease;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
         }
 
         .button:hover {
@@ -252,7 +245,7 @@
 
         .button-primary {
             min-width: 225px;
-            color: white;
+            color: #fff;
             background: linear-gradient(135deg, #5ba5ff, #246be6);
             box-shadow: 0 12px 30px rgba(37, 99, 235, 0.3);
         }
@@ -264,24 +257,24 @@
         .button-secondary {
             min-width: 190px;
             color: #eaf1ff;
-            border: 1px solid rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             background: rgba(255, 255, 255, 0.05);
         }
 
         .button-secondary:hover {
-            border-color: rgba(255, 255, 255, 0.4);
-            background: rgba(255, 255, 255, 0.09);
+            background: rgba(255, 255, 255, 0.1);
         }
 
         /* Fast cursor rockets */
         .cursor-rocket {
             position: absolute;
-            z-index: 4;
+            z-index: 2;
             width: 34px;
             height: 45px;
             pointer-events: none;
+            opacity: 0;
             filter: drop-shadow(0 0 7px rgba(115, 183, 255, 0.85));
-            animation: cursor-rocket-flight 4.8s linear infinite;
+            animation: rocket-cross 5s linear infinite;
         }
 
         .cursor-rocket::before {
@@ -297,7 +290,7 @@
                 42% 70%,
                 18% 94%
             );
-            background: #ffffff;
+            background: #fff;
         }
 
         .cursor-rocket::after {
@@ -319,37 +312,34 @@
         .cursor-rocket .flame {
             position: absolute;
             z-index: -1;
-            left: -42px;
-            top: 24px;
-            width: 52px;
+            left: -45px;
+            top: 22px;
+            width: 55px;
             height: 16px;
             border-radius: 50% 0 0 50%;
-            background:
-                linear-gradient(
-                    90deg,
-                    transparent,
-                    #ff3b30 24%,
-                    #ff8c42 52%,
-                    #ffe58a 82%,
-                    transparent
-                );
+            background: linear-gradient(
+                90deg,
+                transparent,
+                #ff3b30 23%,
+                #ff8c42 50%,
+                #ffe58a 82%,
+                transparent
+            );
             filter: blur(2px);
             transform: rotate(7deg);
-            transform-origin: right center;
-            animation: cursor-flame 0.14s ease-in-out infinite alternate;
+            animation: flame-flicker 0.15s ease-in-out infinite alternate;
         }
 
         .cursor-rocket .flame::before,
         .cursor-rocket .flame::after {
             content: "";
             position: absolute;
-            right: 5px;
+            right: 4px;
             border-radius: 50% 0 0 50%;
-            transform-origin: right center;
         }
 
         .cursor-rocket .flame::before {
-            top: -5px;
+            top: -6px;
             width: 38px;
             height: 9px;
             background: linear-gradient(90deg, transparent, #ff4f35, #ffd15c);
@@ -358,7 +348,7 @@
 
         .cursor-rocket .flame::after {
             top: 12px;
-            width: 31px;
+            width: 32px;
             height: 7px;
             background: linear-gradient(90deg, transparent, #ff6b35, #ffdd70);
             filter: blur(2px);
@@ -366,19 +356,19 @@
 
         .cursor-rocket .spark {
             position: absolute;
-            left: -48px;
+            left: -52px;
             top: 30px;
             width: 5px;
             height: 5px;
             border-radius: 50%;
             background: #ffd166;
             box-shadow: 0 0 9px #ff9f43;
-            animation: rocket-spark 0.75s linear infinite;
+            animation: spark-trail 0.75s linear infinite;
         }
 
         .cursor-rocket .spark.two {
-            top: 16px;
-            left: -30px;
+            top: 15px;
+            left: -32px;
             width: 3px;
             height: 3px;
             animation-delay: -0.35s;
@@ -386,64 +376,60 @@
 
         .cursor-rocket.r1 {
             top: 15%;
-            left: -80px;
-            animation-delay: -0.8s;
+            left: -100px;
+            animation-delay: -0.5s;
         }
 
         .cursor-rocket.r2 {
-            top: 32%;
-            left: -120px;
-            transform: scale(0.75);
-            animation-delay: -2.7s;
+            top: 31%;
+            left: -100px;
+            transform: scale(0.76);
+            animation-delay: -2.1s;
         }
 
         .cursor-rocket.r3 {
-            top: 57%;
+            top: 52%;
             left: -100px;
             transform: scale(0.62);
-            animation-delay: -1.9s;
+            animation-delay: -3.3s;
         }
 
         .cursor-rocket.r4 {
-            top: 76%;
-            left: -130px;
+            top: 73%;
+            left: -100px;
             transform: scale(0.88);
-            animation-delay: -4s;
+            animation-delay: -1.4s;
         }
 
         .cursor-rocket.r5 {
-            top: 44%;
-            left: -90px;
+            top: 42%;
+            left: -100px;
             transform: scale(0.55);
-            animation-delay: -3.5s;
+            animation-delay: -4s;
         }
 
-        @keyframes cursor-rocket-flight {
+        @keyframes rocket-cross {
             0% {
                 left: -100px;
                 opacity: 0;
-                transform: translateY(30px) rotate(-18deg);
+                transform: translateY(35px) rotate(-18deg);
             }
 
-            7% {
+            8% {
                 opacity: 1;
             }
 
-            23% {
-                transform: translateY(-28px) rotate(-11deg);
+            28% {
+                transform: translateY(-25px) rotate(-11deg);
             }
 
-            48% {
-                transform: translateY(19px) rotate(-20deg);
+            52% {
+                transform: translateY(18px) rotate(-20deg);
             }
 
-            73% {
-                transform: translateY(-34px) rotate(-12deg);
+            76% {
+                transform: translateY(-30px) rotate(-12deg);
                 opacity: 1;
-            }
-
-            94% {
-                opacity: 0.85;
             }
 
             100% {
@@ -453,7 +439,7 @@
             }
         }
 
-        @keyframes cursor-flame {
+        @keyframes flame-flicker {
             from {
                 width: 40px;
                 opacity: 0.7;
@@ -461,13 +447,13 @@
             }
 
             to {
-                width: 62px;
+                width: 64px;
                 opacity: 1;
                 transform: rotate(7deg) scaleY(1.18);
             }
         }
 
-        @keyframes rocket-spark {
+        @keyframes spark-trail {
             0% {
                 opacity: 0;
                 transform: translate(0, 0) scale(0.4);
@@ -483,7 +469,7 @@
             }
         }
 
-        /* Red carpet scene */
+        /* Carpet scene */
         .carpet-scene {
             position: relative;
             width: min(580px, 94vw);
@@ -494,9 +480,9 @@
 
         .carpet {
             position: absolute;
-            left: 6%;
             right: 6%;
             bottom: 13px;
+            left: 6%;
             height: 92px;
             border: 1px solid rgba(255, 176, 176, 0.3);
             border-radius: 12px 12px 5px 5px;
@@ -526,7 +512,6 @@
             width: 13px;
             border-radius: 4px;
             background: linear-gradient(#f5c36b, #9a571d, #f5c36b);
-            box-shadow: 0 0 12px rgba(245, 195, 107, 0.2);
         }
 
         .carpet::before {
@@ -541,7 +526,7 @@
             position: absolute;
             right: 2%;
             bottom: 0;
-            z-index: 8;
+            z-index: 15;
             padding: 3px 8px;
             transform: rotate(-8deg);
             color: #ffd6d6;
@@ -554,10 +539,10 @@
             text-transform: uppercase;
         }
 
-        /* Cursors moving across and landing on the carpet */
+        /* Cursors moving along the carpet */
         .carpet-cursor {
             position: absolute;
-            z-index: 9;
+            z-index: 12;
             width: 25px;
             height: 35px;
             pointer-events: none;
@@ -577,7 +562,7 @@
                 43% 70%,
                 20% 92%
             );
-            background: #ffffff;
+            background: #fff;
         }
 
         .carpet-cursor::after {
@@ -596,42 +581,44 @@
             background: linear-gradient(135deg, #4ca3ff, #8e4de8);
         }
 
-        .carpet-cursor.running-one {
-            left: 11%;
-            bottom: 72px;
+        .running-one {
+            left: 8%;
+            bottom: 75px;
             animation: carpet-run-one 5.2s ease-in-out infinite;
         }
 
-        .carpet-cursor.running-two {
-            left: 17%;
-            bottom: 45px;
+        .running-two {
+            left: 9%;
+            bottom: 42px;
+            transform: scale(0.72);
             animation: carpet-run-two 6.3s ease-in-out infinite;
         }
 
-        .carpet-cursor.running-three {
-            left: 9%;
-            bottom: 60px;
+        .running-three {
+            left: 8%;
+            bottom: 57px;
+            transform: scale(0.58);
             animation: carpet-run-three 7s ease-in-out infinite;
         }
 
-        .carpet-cursor.placed-one {
+        .placed-one {
             left: 44%;
             bottom: 52px;
-            animation: place-cursor-one 5.5s ease-in-out infinite;
+            animation: place-one 5.5s ease-in-out infinite;
         }
 
-        .carpet-cursor.placed-two {
+        .placed-two {
             left: 56%;
             bottom: 48px;
-            animation: place-cursor-two 6.2s ease-in-out infinite;
+            animation: place-two 6.2s ease-in-out infinite;
         }
 
         @keyframes carpet-run-one {
             0% {
                 left: 8%;
                 bottom: 75px;
-                transform: rotate(-20deg);
                 opacity: 0;
+                transform: rotate(-20deg);
             }
 
             10% {
@@ -648,14 +635,13 @@
                 left: 72%;
                 bottom: 61px;
                 transform: rotate(-10deg);
-                opacity: 1;
             }
 
             100% {
                 left: 92%;
                 bottom: 43px;
-                transform: rotate(15deg);
                 opacity: 0;
+                transform: rotate(15deg);
             }
         }
 
@@ -663,8 +649,8 @@
             0% {
                 left: 9%;
                 bottom: 42px;
-                transform: rotate(15deg) scale(0.72);
                 opacity: 0;
+                transform: rotate(15deg) scale(0.72);
             }
 
             12% {
@@ -686,8 +672,8 @@
             100% {
                 left: 95%;
                 bottom: 70px;
-                transform: rotate(-18deg) scale(0.72);
                 opacity: 0;
+                transform: rotate(-18deg) scale(0.72);
             }
         }
 
@@ -695,8 +681,8 @@
             0% {
                 left: 8%;
                 bottom: 57px;
-                transform: rotate(-8deg) scale(0.58);
                 opacity: 0;
+                transform: rotate(-8deg) scale(0.58);
             }
 
             14% {
@@ -712,57 +698,47 @@
             100% {
                 left: 94%;
                 bottom: 52px;
-                transform: rotate(-12deg) scale(0.58);
                 opacity: 0;
+                transform: rotate(-12deg) scale(0.58);
             }
         }
 
-        @keyframes place-cursor-one {
+        @keyframes place-one {
             0%, 17% {
-                transform: translate(-82px, -45px) rotate(12deg);
                 opacity: 0;
+                transform: translate(-82px, -45px) rotate(12deg);
             }
 
             28% {
                 opacity: 1;
             }
 
-            48%, 72% {
-                transform: translate(0, 0) rotate(12deg);
+            48%, 100% {
                 opacity: 1;
-            }
-
-            100% {
                 transform: translate(0, 0) rotate(12deg);
-                opacity: 0.85;
             }
         }
 
-        @keyframes place-cursor-two {
+        @keyframes place-two {
             0%, 22% {
-                transform: translate(78px, -52px) rotate(-15deg);
                 opacity: 0;
+                transform: translate(78px, -52px) rotate(-15deg) scale(0.85);
             }
 
             34% {
                 opacity: 1;
             }
 
-            52%, 76% {
-                transform: translate(0, 0) rotate(-15deg);
+            52%, 100% {
                 opacity: 1;
-            }
-
-            100% {
-                transform: translate(0, 0) rotate(-15deg);
-                opacity: 0.85;
+                transform: translate(0, 0) rotate(-15deg) scale(0.85);
             }
         }
 
-        /* Human-like cartoon boys */
+        /* Cartoon boys */
         .boy {
             position: absolute;
-            z-index: 7;
+            z-index: 14;
             bottom: 51px;
             width: 92px;
             height: 145px;
@@ -785,7 +761,7 @@
             width: 42px;
             height: 45px;
             border: 2px solid rgba(0, 0, 0, 0.45);
-            border-radius: 48% 48% 45% 45%;
+            border-radius: 48%;
             background: #d89469;
             box-shadow: inset -7px -4px 0 rgba(113, 53, 43, 0.16);
         }
@@ -822,11 +798,11 @@
             background: #c47a5d;
         }
 
-        .boy-ear.left-ear {
+        .left-ear {
             left: 25px;
         }
 
-        .boy-ear.right-ear {
+        .right-ear {
             right: 17px;
         }
 
@@ -861,24 +837,24 @@
             transform-origin: top center;
         }
 
-        .boy.left .boy-arm.left-arm {
+        .boy.left .left-arm {
             left: 10px;
-            animation: left-throwing-arm 2.8s ease-in-out infinite;
+            animation: left-throw-arm 2.8s ease-in-out infinite;
         }
 
-        .boy.left .boy-arm.right-arm {
+        .boy.left .right-arm {
             right: 4px;
-            animation: left-catching-arm 2.8s ease-in-out infinite;
+            animation: left-catch-arm 2.8s ease-in-out infinite;
         }
 
-        .boy.right .boy-arm.left-arm {
+        .boy.right .left-arm {
             left: 10px;
-            animation: right-catching-arm 3.1s ease-in-out infinite;
+            animation: right-catch-arm 3.1s ease-in-out infinite;
         }
 
-        .boy.right .boy-arm.right-arm {
+        .boy.right .right-arm {
             right: 4px;
-            animation: right-throwing-arm 3.1s ease-in-out infinite;
+            animation: right-throw-arm 3.1s ease-in-out infinite;
         }
 
         .boy-hand {
@@ -889,28 +865,28 @@
             background: #d89469;
         }
 
-        .boy.left .boy-hand.left-hand {
+        .boy.left .left-hand {
             left: 0;
             top: 108px;
-            animation: left-throwing-hand 2.8s ease-in-out infinite;
+            animation: left-throw-hand 2.8s ease-in-out infinite;
         }
 
-        .boy.left .boy-hand.right-hand {
+        .boy.left .right-hand {
             right: -1px;
             top: 105px;
-            animation: left-catching-hand 2.8s ease-in-out infinite;
+            animation: left-catch-hand 2.8s ease-in-out infinite;
         }
 
-        .boy.right .boy-hand.left-hand {
+        .boy.right .left-hand {
             left: 0;
             top: 108px;
-            animation: right-catching-hand 3.1s ease-in-out infinite;
+            animation: right-catch-hand 3.1s ease-in-out infinite;
         }
 
-        .boy.right .boy-hand.right-hand {
+        .boy.right .right-hand {
             right: -1px;
             top: 105px;
-            animation: right-throwing-hand 3.1s ease-in-out infinite;
+            animation: right-throw-hand 3.1s ease-in-out infinite;
         }
 
         .boy-leg {
@@ -922,12 +898,12 @@
             background: #26334d;
         }
 
-        .boy-leg.left-leg {
+        .left-leg {
             left: 26px;
             transform: rotate(5deg);
         }
 
-        .boy-leg.right-leg {
+        .right-leg {
             right: 22px;
             transform: rotate(-8deg);
         }
@@ -942,11 +918,11 @@
             box-shadow: inset 0 -4px 0 #8390a5;
         }
 
-        .boy-shoe.left-shoe {
+        .left-shoe {
             left: 15px;
         }
 
-        .boy-shoe.right-shoe {
+        .right-shoe {
             right: 9px;
         }
 
@@ -964,205 +940,93 @@
             white-space: nowrap;
         }
 
-        .boy.left .boy-caption {
-            transform: rotate(-5deg);
-        }
-
-        .boy.right .boy-caption {
-            transform: rotate(5deg);
-        }
-
         @keyframes boy-bounce {
             0%, 100% {
                 transform: translateY(0) rotate(-1deg);
             }
 
-            42% {
+            45% {
                 transform: translateY(-4px) rotate(1deg);
             }
 
-            58% {
+            60% {
                 transform: translateY(-1px) rotate(-1deg);
             }
         }
 
-        @keyframes left-throwing-arm {
-            0%, 100% {
-                transform: rotate(37deg);
-            }
-
-            30% {
-                transform: rotate(78deg);
-            }
-
-            48% {
-                transform: rotate(106deg);
-            }
-
-            68% {
-                transform: rotate(58deg);
-            }
+        @keyframes left-throw-arm {
+            0%, 100% { transform: rotate(37deg); }
+            30% { transform: rotate(78deg); }
+            48% { transform: rotate(106deg); }
+            68% { transform: rotate(58deg); }
         }
 
-        @keyframes left-catching-arm {
-            0%, 100% {
-                transform: rotate(-58deg);
-            }
-
-            36% {
-                transform: rotate(-83deg);
-            }
-
-            55% {
-                transform: rotate(-108deg);
-            }
-
-            76% {
-                transform: rotate(-62deg);
-            }
+        @keyframes left-catch-arm {
+            0%, 100% { transform: rotate(-58deg); }
+            36% { transform: rotate(-83deg); }
+            55% { transform: rotate(-108deg); }
+            76% { transform: rotate(-62deg); }
         }
 
-        @keyframes right-throwing-arm {
-            0%, 100% {
-                transform: rotate(-58deg);
-            }
-
-            28% {
-                transform: rotate(-102deg);
-            }
-
-            46% {
-                transform: rotate(-78deg);
-            }
-
-            70% {
-                transform: rotate(-55deg);
-            }
+        @keyframes right-throw-arm {
+            0%, 100% { transform: rotate(-58deg); }
+            28% { transform: rotate(-102deg); }
+            46% { transform: rotate(-78deg); }
+            70% { transform: rotate(-55deg); }
         }
 
-        @keyframes right-catching-arm {
-            0%, 100% {
-                transform: rotate(37deg);
-            }
-
-            34% {
-                transform: rotate(105deg);
-            }
-
-            53% {
-                transform: rotate(79deg);
-            }
-
-            76% {
-                transform: rotate(42deg);
-            }
+        @keyframes right-catch-arm {
+            0%, 100% { transform: rotate(37deg); }
+            34% { transform: rotate(105deg); }
+            53% { transform: rotate(79deg); }
+            76% { transform: rotate(42deg); }
         }
 
-        @keyframes left-throwing-hand {
-            0%, 100% {
-                transform: translate(0, 0);
-            }
-
-            30% {
-                transform: translate(21px, -17px);
-            }
-
-            48% {
-                transform: translate(30px, -27px);
-            }
-
-            68% {
-                transform: translate(10px, -8px);
-            }
+        @keyframes left-throw-hand {
+            0%, 100% { transform: translate(0, 0); }
+            30% { transform: translate(21px, -17px); }
+            48% { transform: translate(30px, -27px); }
+            68% { transform: translate(10px, -8px); }
         }
 
-        @keyframes left-catching-hand {
-            0%, 100% {
-                transform: translate(0, 0);
-            }
-
-            36% {
-                transform: translate(-6px, -10px);
-            }
-
-            55% {
-                transform: translate(-12px, -19px);
-            }
-
-            76% {
-                transform: translate(-2px, -5px);
-            }
+        @keyframes left-catch-hand {
+            0%, 100% { transform: translate(0, 0); }
+            36% { transform: translate(-6px, -10px); }
+            55% { transform: translate(-12px, -19px); }
+            76% { transform: translate(-2px, -5px); }
         }
 
-        @keyframes right-throwing-hand {
-            0%, 100% {
-                transform: translate(0, 0);
-            }
-
-            28% {
-                transform: translate(-25px, -20px);
-            }
-
-            46% {
-                transform: translate(-15px, -10px);
-            }
-
-            70% {
-                transform: translate(0, 0);
-            }
+        @keyframes right-throw-hand {
+            0%, 100% { transform: translate(0, 0); }
+            28% { transform: translate(-25px, -20px); }
+            46% { transform: translate(-15px, -10px); }
+            70% { transform: translate(0, 0); }
         }
 
-        @keyframes right-catching-hand {
-            0%, 100% {
-                transform: translate(0, 0);
-            }
-
-            34% {
-                transform: translate(15px, -22px);
-            }
-
-            53% {
-                transform: translate(25px, -12px);
-            }
-
-            76% {
-                transform: translate(5px, -3px);
-            }
+        @keyframes right-catch-hand {
+            0%, 100% { transform: translate(0, 0); }
+            34% { transform: translate(15px, -22px); }
+            53% { transform: translate(25px, -12px); }
+            76% { transform: translate(5px, -3px); }
         }
 
         /* Rogue cursor */
         .rogue-cursor {
             position: fixed;
             z-index: 50;
-            left: 18vw;
-            top: 34vh;
+            top: 30vh;
+            left: 14vw;
             width: 30px;
             height: 41px;
             pointer-events: none;
             filter: drop-shadow(0 5px 7px rgba(0, 0, 0, 0.55));
-            animation: rogue-roam 18s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+            animation: rogue-roam 18s ease-in-out infinite;
         }
 
-        .rogue-cursor::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            clip-path: polygon(
-                4% 0%,
-                94% 65%,
-                57% 68%,
-                76% 99%,
-                60% 100%,
-                42% 70%,
-                18% 94%
-            );
-            background: #ffffff;
-        }
-
+        .rogue-cursor::before,
         .rogue-cursor::after {
             content: "";
             position: absolute;
-            inset: 3px 3px 4px 4px;
             clip-path: polygon(
                 4% 0%,
                 94% 65%,
@@ -1172,6 +1036,15 @@
                 42% 70%,
                 18% 94%
             );
+        }
+
+        .rogue-cursor::before {
+            inset: 0;
+            background: #fff;
+        }
+
+        .rogue-cursor::after {
+            inset: 3px 3px 4px 4px;
             background: linear-gradient(145deg, #ff5b5b, #8e2de2);
         }
 
@@ -1192,66 +1065,60 @@
 
         @keyframes rogue-roam {
             0% {
-                left: 14vw;
                 top: 30vh;
+                left: 14vw;
                 transform: rotate(-12deg) scale(0.9);
             }
 
-            12% {
-                left: 67vw;
+            14% {
                 top: 19vh;
+                left: 67vw;
                 transform: rotate(18deg) scale(1);
             }
 
-            24% {
-                left: 84vw;
+            28% {
                 top: 62vh;
+                left: 84vw;
                 transform: rotate(-25deg) scale(0.82);
             }
 
-            38% {
-                left: 57vw;
+            43% {
                 top: 78vh;
+                left: 57vw;
                 transform: rotate(13deg) scale(1.08);
             }
 
-            51% {
-                left: 22vw;
+            58% {
                 top: 68vh;
+                left: 22vw;
                 transform: rotate(-18deg) scale(0.86);
             }
 
-            66% {
-                left: 7vw;
+            73% {
                 top: 49vh;
+                left: 7vw;
                 transform: rotate(27deg) scale(1);
             }
 
-            79% {
-                left: 31vw;
+            87% {
                 top: 13vh;
+                left: 31vw;
                 transform: rotate(-8deg) scale(0.8);
             }
 
-            91% {
-                left: 78vw;
-                top: 38vh;
-                transform: rotate(21deg) scale(1.05);
-            }
-
             100% {
-                left: 14vw;
                 top: 30vh;
+                left: 14vw;
                 transform: rotate(-12deg) scale(0.9);
             }
         }
 
-        /* Magical puff following the user's cursor */
+        /* Magical puff */
         .magic-puff {
             position: fixed;
             z-index: 100;
-            left: 0;
             top: 0;
+            left: 0;
             width: 24px;
             height: 24px;
             pointer-events: none;
@@ -1266,16 +1133,13 @@
 
         .magic-puff span {
             position: absolute;
-            left: 50%;
             top: 50%;
+            left: 50%;
             width: 7px;
             height: 7px;
             border-radius: 50%;
-            background: #ffffff;
-            box-shadow:
-                0 0 7px #ffffff,
-                0 0 14px #8ec5ff;
-            transform: translate(-50%, -50%);
+            background: #fff;
+            box-shadow: 0 0 7px #fff, 0 0 14px #8ec5ff;
             animation: puff-spark 1.1s ease-out infinite;
         }
 
@@ -1334,7 +1198,7 @@
             }
         }
 
-        /* QR section */
+        /* QR */
         .qr-section {
             display: flex;
             align-items: center;
@@ -1346,13 +1210,11 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 16px;
             background: rgba(255, 255, 255, 0.035);
-            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
         }
 
         .qr-link {
             display: block;
             line-height: 0;
-            border-radius: 10px;
         }
 
         .qr-image {
@@ -1362,12 +1224,11 @@
             border: 1px solid rgba(255, 255, 255, 0.12);
             border-radius: 10px;
             background: white;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease;
         }
 
         .qr-link:hover .qr-image {
             transform: rotate(3deg) scale(1.05);
-            box-shadow: 0 0 22px rgba(90, 162, 255, 0.35);
         }
 
         .qr-copy {
@@ -1377,7 +1238,6 @@
         .qr-copy strong {
             display: block;
             margin-bottom: 3px;
-            color: #e9eef8;
             font-size: 0.92rem;
         }
 
@@ -1389,9 +1249,9 @@
         /* Scroll cue */
         .scroll-cue {
             position: absolute;
-            left: 50%;
             bottom: 20px;
-            z-index: 8;
+            left: 50%;
+            z-index: 12;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -1405,10 +1265,6 @@
             transform: translateX(-50%);
         }
 
-        .scroll-cue:hover {
-            color: #c2d6ff;
-        }
-
         .scroll-track {
             position: relative;
             width: 25px;
@@ -1420,15 +1276,14 @@
         .scroll-track::after {
             content: "";
             position: absolute;
-            left: 50%;
             top: 8px;
+            left: 50%;
             width: 5px;
             height: 9px;
             border-radius: 5px;
-            background: #ffffff;
-            box-shadow: 0 0 10px #80b8ff;
+            background: #fff;
             transform: translateX(-50%);
-            animation: scroll-wheel 1.8s ease-in-out infinite;
+            animation: wheel 1.8s ease-in-out infinite;
         }
 
         .scroll-cursor {
@@ -1438,38 +1293,47 @@
             width: 18px;
             height: 25px;
             filter: drop-shadow(0 0 5px rgba(100, 170, 255, 0.8));
-            animation: cursor-scroll 1.8s ease-in-out infinite;
+            animation: wheel-cursor 1.8s ease-in-out infinite;
+        }
+
+        .scroll-cursor::before,
+        .scroll-cursor::after {
+            content: "";
+            position: absolute;
+            clip-path: polygon(
+                4% 0,
+                93% 66%,
+                56% 68%,
+                74% 100%,
+                58% 100%,
+                41% 70%,
+                19% 93%
+            );
         }
 
         .scroll-cursor::before {
-            content: "";
-            position: absolute;
             inset: 0;
-            clip-path: polygon(4% 0, 93% 66%, 56% 68%, 74% 100%, 58% 100%, 41% 70%, 19% 93%);
             background: #fff;
         }
 
         .scroll-cursor::after {
-            content: "";
-            position: absolute;
             inset: 2px;
-            clip-path: polygon(4% 0, 93% 66%, 56% 68%, 74% 100%, 58% 100%, 41% 70%, 19% 93%);
             background: #5a9df8;
         }
 
-        @keyframes scroll-wheel {
+        @keyframes wheel {
             0%, 100% {
-                transform: translate(-50%, 0);
                 opacity: 1;
+                transform: translate(-50%, 0);
             }
 
             55% {
-                transform: translate(-50%, 13px);
                 opacity: 0.2;
+                transform: translate(-50%, 13px);
             }
         }
 
-        @keyframes cursor-scroll {
+        @keyframes wheel-cursor {
             0%, 100% {
                 transform: translateY(0) rotate(-8deg);
             }
@@ -1488,7 +1352,7 @@
             border-top: 1px solid rgba(255, 255, 255, 0.07);
             background:
                 linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 30%),
-                rgba(5, 7, 12, 0.46);
+                rgba(5, 7, 12, 0.52);
         }
 
         .install-section::before {
@@ -1501,7 +1365,6 @@
                 linear-gradient(rgba(90, 162, 255, 0.06) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(90, 162, 255, 0.06) 1px, transparent 1px);
             background-size: 42px 42px;
-            mask-image: linear-gradient(to bottom, transparent, black 18%, black 82%, transparent);
         }
 
         .install-section::after {
@@ -1529,7 +1392,7 @@
             height: 270px;
             border: 1px dashed rgba(116, 177, 255, 0.2);
             border-radius: 50%;
-            animation: orbit-spin 28s linear infinite;
+            animation: orbit 28s linear infinite;
         }
 
         .control-orbit::before,
@@ -1555,7 +1418,7 @@
             box-shadow: 0 0 16px #ef6b7f;
         }
 
-        @keyframes orbit-spin {
+        @keyframes orbit {
             to {
                 transform: rotate(360deg);
             }
@@ -1563,9 +1426,9 @@
 
         .factory-line {
             position: absolute;
-            left: 0;
             right: 0;
             bottom: 36px;
+            left: 0;
             z-index: -1;
             height: 1px;
             background: linear-gradient(
@@ -1586,7 +1449,7 @@
             border-radius: 50%;
             background: #67aaff;
             box-shadow: 0 0 13px #67aaff;
-            animation: conveyor-dot 7s linear infinite;
+            animation: conveyor 7s linear infinite;
         }
 
         .factory-line::before {
@@ -1598,10 +1461,10 @@
             animation-delay: -3.5s;
         }
 
-        @keyframes conveyor-dot {
+        @keyframes conveyor {
             0% {
-                transform: translateX(0);
                 opacity: 0;
+                transform: translateX(0);
             }
 
             10%, 85% {
@@ -1609,8 +1472,8 @@
             }
 
             100% {
-                transform: translateX(260px);
                 opacity: 0;
+                transform: translateX(260px);
             }
         }
 
@@ -1633,7 +1496,7 @@
 
         .section-title {
             margin-bottom: 14px;
-            color: #ffffff;
+            color: #fff;
             font-size: clamp(2rem, 5vw, 3.2rem);
             font-weight: 760;
             letter-spacing: -0.045em;
@@ -1658,45 +1521,27 @@
             min-height: 300px;
             padding: 28px;
             overflow: hidden;
-            border: 1px solid var(--border);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 18px;
             background:
                 linear-gradient(145deg, rgba(50, 104, 201, 0.15), rgba(255, 255, 255, 0.025)),
-                rgba(12, 16, 26, 0.82);
+                rgba(12, 16, 26, 0.84);
             box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
-            transition:
-                transform 0.3s ease,
-                border-color 0.3s ease,
-                background 0.3s ease;
+            transition: transform 0.3s ease, border-color 0.3s ease;
         }
 
         .step::before {
             content: "";
             position: absolute;
             top: 0;
-            left: 28px;
             right: 28px;
+            left: 28px;
             height: 2px;
             background: linear-gradient(90deg, transparent, #5aa2ff, transparent);
-            opacity: 0.55;
-        }
-
-        .step::after {
-            content: "";
-            position: absolute;
-            right: -35px;
-            bottom: -50px;
-            width: 140px;
-            height: 140px;
-            border: 1px solid rgba(90, 162, 255, 0.13);
-            border-radius: 50%;
         }
 
         .step:hover {
             border-color: rgba(90, 162, 255, 0.45);
-            background:
-                linear-gradient(145deg, rgba(50, 104, 201, 0.22), rgba(255, 255, 255, 0.04)),
-                rgba(12, 16, 26, 0.92);
             transform: translateY(-7px);
         }
 
@@ -1707,9 +1552,8 @@
             width: 48px;
             height: 48px;
             margin-bottom: 22px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 14px;
-            color: white;
+            color: #fff;
             background: linear-gradient(135deg, #5da7ff, #236ee8);
             box-shadow: 0 10px 24px rgba(35, 110, 232, 0.28);
             font-size: 1.25rem;
@@ -1718,14 +1562,12 @@
 
         .step-title {
             margin-bottom: 12px;
-            color: #ffffff;
+            color: #fff;
             font-size: 1.25rem;
             font-weight: 750;
         }
 
         .step-description {
-            position: relative;
-            z-index: 1;
             color: #a8b1c0;
             font-size: 0.94rem;
             line-height: 1.75;
@@ -1774,18 +1616,6 @@
 
         .footer-link:hover {
             text-decoration: underline;
-        }
-
-        :focus-visible {
-            outline: 3px solid #8bc1ff;
-            outline-offset: 4px;
-        }
-
-        @media (max-width: 900px) {
-            .control-orbit {
-                right: -80px;
-                opacity: 0.6;
-            }
         }
 
         @media (max-width: 800px) {
@@ -1858,7 +1688,7 @@
             }
 
             .cursor-icon,
-            .rocket-cursor.r5 {
+            .cursor-rocket.r5 {
                 display: none;
             }
 
@@ -1882,9 +1712,9 @@
             *,
             *::before,
             *::after {
-                scroll-behavior: auto !important;
                 animation-duration: 0.01ms !important;
                 animation-iteration-count: 1 !important;
+                scroll-behavior: auto !important;
                 transition-duration: 0.01ms !important;
             }
 
@@ -1929,4 +1759,285 @@
         <path d="M3 3l7.07 18.97a.5.5 0 0 0 .86.04l2.05-7.03a.5.5 0 0 1 .32-.32l7.05-2.05a.5.5 0 0 0 .04-.86L3 3z"></path>
     </svg>
 
-    <svg class="cursor-icon cursor-icon-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    <svg class="cursor-icon cursor-icon-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M3 3l7.07 18.97a.5.5 0 0 0 .86.04l2.05-7.03a.5.5 0 0 1 .32-.32l7.05-2.05a.5.5 0 0 0 .04-.86L3 3z"></path>
+    </svg>
+
+    <svg class="cursor-icon cursor-icon-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M3 3l7.07 18.97a.5.5 0 0 0 .86.04l2.05-7.03a.5.5 0 0 1 .32-.32l7.05-2.05a.5.5 0 0 0 .04-.86L3 3z"></path>
+    </svg>
+
+    <svg class="cursor-icon cursor-icon-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M3 3l7.07 18.97a.5.5 0 0 0 .86.04l2.05-7.03a.5.5 0 0 1 .32-.32l7.05-2.05a.5.5 0 0 0 .04-.86L3 3z"></path>
+    </svg>
+
+    <svg class="cursor-icon cursor-icon-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <path d="M3 3l7.07 18.97a.5.5 0 0 0 .86.04l2.05-7.03a.5.5 0 0 1 .32-.32l7.05-2.05a.5.5 0 0 0 .04-.86L3 3z"></path>
+    </svg>
+
+    <main>
+        <section class="hero" id="top">
+            <!-- Cursor rockets -->
+            <div class="cursor-rocket r1" aria-hidden="true">
+                <span class="flame"></span>
+                <span class="spark"></span>
+                <span class="spark two"></span>
+            </div>
+
+            <div class="cursor-rocket r2" aria-hidden="true">
+                <span class="flame"></span>
+                <span class="spark"></span>
+                <span class="spark two"></span>
+            </div>
+
+            <div class="cursor-rocket r3" aria-hidden="true">
+                <span class="flame"></span>
+                <span class="spark"></span>
+                <span class="spark two"></span>
+            </div>
+
+            <div class="cursor-rocket r4" aria-hidden="true">
+                <span class="flame"></span>
+                <span class="spark"></span>
+                <span class="spark two"></span>
+            </div>
+
+            <div class="cursor-rocket r5" aria-hidden="true">
+                <span class="flame"></span>
+                <span class="spark"></span>
+                <span class="spark two"></span>
+            </div>
+
+            <div class="hero-content">
+                <div class="eyebrow">A tiny macOS utility with one job</div>
+
+                <h1>Never lose your mouse cursor again.</h1>
+
+                <p class="hero-subtitle">
+                    Instantly teleport your cursor to the exact center of your screen with a quick
+                    <strong>trackpad shake</strong> or <strong>Cmd + Shift + M</strong>.
+                    Runs silently in the background on macOS.
+                </p>
+
+                <div class="button-group">
+                    <a
+                        href="https://github.com/yoavharari/mouselocator/releases/download/v1.0.0/MouseLocator.zip"
+                        download
+                        class="button button-primary"
+                    >
+                        Download for macOS — Free
+                    </a>
+
+                    <a
+                        href="https://paypal.me/yoavharari"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="button button-secondary"
+                    >
+                        Donate via PayPal
+                    </a>
+                </div>
+
+                <div class="carpet-scene" aria-label="Two boys playing catch with cursors on a red carpet">
+                    <div class="carpet"></div>
+                    <div class="carpet-label">Official cursor runway</div>
+
+                    <div class="carpet-cursor running-one"></div>
+                    <div class="carpet-cursor running-two"></div>
+                    <div class="carpet-cursor running-three"></div>
+                    <div class="carpet-cursor placed-one"></div>
+                    <div class="carpet-cursor placed-two"></div>
+
+                    <div class="boy left">
+                        <span class="boy-caption">Catch it!</span>
+                        <span class="boy-head"></span>
+                        <span class="boy-ear left-ear"></span>
+                        <span class="boy-ear right-ear"></span>
+                        <span class="boy-body"></span>
+                        <span class="boy-arm left-arm"></span>
+                        <span class="boy-arm right-arm"></span>
+                        <span class="boy-hand left-hand"></span>
+                        <span class="boy-hand right-hand"></span>
+                        <span class="boy-leg left-leg"></span>
+                        <span class="boy-leg right-leg"></span>
+                        <span class="boy-shoe left-shoe"></span>
+                        <span class="boy-shoe right-shoe"></span>
+                    </div>
+
+                    <div class="boy right">
+                        <span class="boy-caption">On the carpet!</span>
+                        <span class="boy-head"></span>
+                        <span class="boy-ear left-ear"></span>
+                        <span class="boy-ear right-ear"></span>
+                        <span class="boy-body"></span>
+                        <span class="boy-arm left-arm"></span>
+                        <span class="boy-arm right-arm"></span>
+                        <span class="boy-hand left-hand"></span>
+                        <span class="boy-hand right-hand"></span>
+                        <span class="boy-leg left-leg"></span>
+                        <span class="boy-leg right-leg"></span>
+                        <span class="boy-shoe left-shoe"></span>
+                        <span class="boy-shoe right-shoe"></span>
+                    </div>
+                </div>
+
+                <div class="qr-section">
+                    <a
+                        class="qr-link"
+                        href="https://paypal.me/yoavharari"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Open PayPal donation page"
+                    >
+                        <img
+                            src="paypal-qr.png"
+                            alt="Scan to donate through PayPal"
+                            class="qr-image"
+                        >
+                    </a>
+
+                    <div class="qr-copy">
+                        <strong>Enjoying MouseLocator?</strong>
+                        <p class="qr-text">Scan with your phone to leave a tip.</p>
+                    </div>
+                </div>
+            </div>
+
+            <a class="scroll-cue" href="#install" aria-label="Scroll down to installation instructions">
+                <span>Scroll for setup</span>
+
+                <span class="scroll-track">
+                    <span class="scroll-cursor"></span>
+                </span>
+            </a>
+        </section>
+
+        <section class="install-section" id="install">
+            <div class="control-orbit" aria-hidden="true"></div>
+            <div class="factory-line" aria-hidden="true"></div>
+
+            <div class="container">
+                <div class="section-heading">
+                    <div class="section-kicker">Cursor control center</div>
+
+                    <h2 class="section-title">Ready in under a minute.</h2>
+
+                    <p class="section-intro">
+                        Install it once, grant macOS the permissions it needs, and let your cursor stop hiding.
+                    </p>
+                </div>
+
+                <div class="steps-grid">
+                    <article class="step">
+                        <div class="step-icon" aria-hidden="true">⇩</div>
+                        <div class="step-badge">1</div>
+
+                        <h3 class="step-title">Unzip</h3>
+
+                        <p class="step-description">
+                            Extract the downloaded <code>MouseLocator.zip</code> file and drag
+                            <code>MouseLocator.app</code> into your <strong>Applications</strong> folder.
+                        </p>
+                    </article>
+
+                    <article class="step">
+                        <div class="step-icon" aria-hidden="true">⌘</div>
+                        <div class="step-badge">2</div>
+
+                        <h3 class="step-title">Bypass Gatekeeper</h3>
+
+                        <p class="step-description">
+                            Double-click the app. If macOS says <em>“Apple could not verify…”</em>,
+                            click <strong>Done</strong>. Then open
+                            <strong>System Settings → Privacy &amp; Security</strong>, scroll to the security section,
+                            and click <strong>Open Anyway</strong>.
+                        </p>
+                    </article>
+
+                    <article class="step">
+                        <div class="step-icon" aria-hidden="true">✓</div>
+                        <div class="step-badge">3</div>
+
+                        <h3 class="step-title">Grant Permissions</h3>
+
+                        <p class="step-description">
+                            In <strong>System Settings → Privacy &amp; Security</strong>, add MouseLocator to both:
+                            <br><br>
+                            • <strong>Accessibility</strong> — needed to move the mouse.<br>
+                            • <strong>Input Monitoring</strong> — needed for the hotkey.
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p class="footer-text">&copy; 2026 MouseLocator. All rights reserved.</p>
+
+        <p class="footer-text">
+            Have a question?
+            <a
+                href="https://paypal.me/yoavharari"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="footer-link"
+            >
+                Get in touch
+            </a>
+        </p>
+    </footer>
+
+    <script>
+        (() => {
+            const puff = document.querySelector(".magic-puff");
+
+            if (!puff || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+                return;
+            }
+
+            let targetX = window.innerWidth / 2;
+            let targetY = window.innerHeight / 2;
+            let currentX = targetX;
+            let currentY = targetY;
+            let hasMoved = false;
+
+            window.addEventListener(
+                "pointermove",
+                (event) => {
+                    targetX = event.clientX;
+                    targetY = event.clientY;
+
+                    if (!hasMoved) {
+                        hasMoved = true;
+                        puff.classList.add("visible");
+                    }
+                },
+                { passive: true }
+            );
+
+            function animatePuff() {
+                currentX += (targetX - currentX) * 0.18;
+                currentY += (targetY - currentY) * 0.18;
+
+                puff.style.left = `${currentX}px`;
+                puff.style.top = `${currentY}px`;
+
+                window.requestAnimationFrame(animatePuff);
+            }
+
+            animatePuff();
+
+            window.addEventListener("blur", () => {
+                puff.classList.remove("visible");
+            });
+
+            window.addEventListener("focus", () => {
+                if (hasMoved) {
+                    puff.classList.add("visible");
+                }
+            });
+        })();
+    </script>
+</body>
+</html>
