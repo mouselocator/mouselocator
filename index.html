@@ -8,7 +8,7 @@
         /* Reset & Base */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%); color: #e5e5e5; line-height: 1.6; overflow-x: hidden; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%); color: #e5e5e5; line-height: 1.6; overflow-x: hidden; position: relative; }
         
         /* Container & Layout */
         .container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
@@ -17,7 +17,39 @@
         .hero { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 40px 24px; position: relative; overflow: hidden; }
         .hero::before { content: ''; position: absolute; top: -50%; right: -20%; width: 500px; height: 500px; background: radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, transparent 70%); border-radius: 50%; pointer-events: none; }
         
-        /* Decorative Floating & Hoverable Rainbow Cursor Icons */
+        /* --- ANIMATION SCENES (PURE CSS/SVG) --- */
+        .scenery-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; overflow: hidden; }
+
+        /* Shooting Stars */
+        .star { position: absolute; width: 2px; height: 80px; background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1)); opacity: 0; transform: rotate(-45deg); animation: shooting-star 4s infinite linear; }
+        .star:nth-child(1) { top: -10%; left: 30%; animation-delay: 0s; }
+        .star:nth-child(2) { top: -10%; left: 70%; animation-delay: 2s; }
+        .star:nth-child(3) { top: -10%; left: 90%; animation-delay: 1.5s; height: 120px; }
+        @keyframes shooting-star { 0% { transform: translateY(-100px) translateX(100px) rotate(-45deg); opacity: 1; } 20% { transform: translateY(800px) translateX(-800px) rotate(-45deg); opacity: 0; } 100% { opacity: 0; } }
+
+        /* VIP Red Carpet Cursor */
+        .red-carpet-scene { position: absolute; bottom: 15%; right: 5%; width: 200px; height: 100px; transform: rotate(-15deg); }
+        .carpet { width: 100%; height: 20px; background: linear-gradient(90deg, #8b0000, #ff0000, #8b0000); border-radius: 10px; box-shadow: 0 5px 15px rgba(255,0,0,0.3); transform: skewX(-40deg); }
+        .vip-cursor { position: absolute; top: -30px; left: -20px; width: 40px; color: gold; filter: drop-shadow(0 0 8px gold); animation: strut 3s ease-in-out infinite alternate; }
+        @keyframes strut { 0% { transform: translateX(0) translateY(0) rotate(0deg); } 50% { transform: translateX(80px) translateY(-10px) rotate(15deg); } 100% { transform: translateX(180px) translateY(0) rotate(-10deg); } }
+
+        /* Stick Figure Catcher */
+        .catcher-scene { position: absolute; bottom: 20%; left: 10%; width: 150px; height: 150px; }
+        .stick-figure { width: 80px; stroke: #888; stroke-width: 3; stroke-linecap: round; fill: none; transform-origin: bottom center; animation: jump-catch 2.5s infinite; }
+        .falling-cursor { position: absolute; top: -150px; left: 40px; width: 35px; color: #00ffff; animation: fall-into-net 2.5s infinite; }
+        @keyframes jump-catch { 0%, 70%, 100% { transform: translateY(0); } 85% { transform: translateY(-30px); } }
+        @keyframes fall-into-net { 0% { transform: translateY(0) rotate(0deg); opacity: 1; } 85% { transform: translateY(160px) rotate(180deg); opacity: 1; } 90%, 100% { opacity: 0; transform: translateY(160px) scale(0.5); } }
+
+        /* Aggressive Clicker */
+        .clicker-scene { position: absolute; top: 20%; right: 15%; width: 100px; height: 100px; }
+        .fake-button { position: absolute; top: 40px; left: 20px; width: 60px; height: 20px; background: #333; border-radius: 4px; border: 1px solid #555; animation: button-press 2s infinite; }
+        .click-cursor { position: absolute; top: 60px; left: 40px; width: 35px; color: #ff00ff; transform-origin: top left; animation: click-attack 2s infinite; }
+        .ripple { position: absolute; top: 45px; left: 45px; width: 10px; height: 10px; border: 2px solid #ff00ff; border-radius: 50%; opacity: 0; animation: click-ripple 2s infinite; }
+        @keyframes click-attack { 0%, 100% { transform: translate(30px, 30px); } 40%, 60% { transform: translate(0, -10px) scale(0.9); } }
+        @keyframes button-press { 0%, 40%, 60%, 100% { transform: scale(1); background: #333; } 50% { transform: scale(0.9); background: #ff00ff; box-shadow: 0 0 15px #ff00ff; } }
+        @keyframes click-ripple { 0%, 45% { transform: scale(1); opacity: 0; } 50% { transform: scale(1); opacity: 1; } 80% { transform: scale(4); opacity: 0; } 100% { opacity: 0; } }
+
+        /* --- LEGACY FLOATING & HOVERABLE RAINBOW CURSORS --- */
         .cursor-icon { position: absolute; opacity: 0.18; pointer-events: auto; z-index: 10; cursor: pointer; color: #ffffff; transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease; }
         .cursor-icon:hover { opacity: 1; transform: scale(1.4) rotate(-10deg); animation: rainbow-glow 2s linear infinite, float 4s ease-in-out infinite; }
         
@@ -42,53 +74,82 @@
             100% { color: #ff0000; filter: drop-shadow(0 0 12px #ff0000); }
         }
 
-        .hero-content { position: relative; z-index: 2; max-width: 720px; }
+        /* UI Elements */
+        .hero-content { position: relative; z-index: 20; max-width: 720px; }
         h1 { font-size: clamp(2.5rem, 8vw, 4rem); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 24px; color: #ffffff; line-height: 1.1; }
         .hero-subtitle { font-size: clamp(1rem, 3vw, 1.25rem); font-weight: 400; color: #a3a3a3; margin-bottom: 48px; line-height: 1.5; max-width: 620px; margin-left: auto; margin-right: auto; }
         .hero-subtitle strong { color: #60a5fa; font-weight: 600; }
         
-        /* Button Group */
         .button-group { display: flex; flex-direction: column; gap: 16px; justify-content: center; align-items: center; margin-bottom: 48px; }
         @media (min-width: 640px) { .button-group { flex-direction: row; gap: 20px; } }
         
-        a.button, button { padding: 14px 32px; border-radius: 8px; font-size: 1rem; font-weight: 500; text-decoration: none; border: none; cursor: pointer; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); display: inline-block; letter-spacing: 0.3px; }
+        a.button { padding: 14px 32px; border-radius: 8px; font-size: 1rem; font-weight: 500; text-decoration: none; border: none; cursor: pointer; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); display: inline-block; }
         .button-primary { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; box-shadow: 0 8px 24px rgba(59, 130, 246, 0.3); min-width: 220px; }
         .button-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(59, 130, 246, 0.4); }
-        .button-primary:active { transform: translateY(0); }
         .button-secondary { background: transparent; color: #e5e5e5; border: 1.5px solid #404040; min-width: 200px; }
         .button-secondary:hover { background: rgba(255, 255, 255, 0.05); border-color: #606060; transform: translateY(-2px); }
-        .button-secondary:active { transform: translateY(0); }
         
-        /* QR Code Section */
-        .qr-section { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: 60px; position: relative; z-index: 2; }
-        .qr-image { width: 140px; height: 140px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.02); padding: 8px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3); transition: transform 0.3s ease; }
+        .qr-section { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-bottom: 60px; position: relative; z-index: 20; }
+        .qr-image { width: 140px; height: 140px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.02); padding: 8px; transition: transform 0.3s ease; }
         .qr-image:hover { transform: scale(1.05); }
         .qr-text { font-size: 0.85rem; color: #737373; font-weight: 500; }
         
-        /* How to Install Section */
-        .install-section { padding: 100px 24px; background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0) 100%); border-top: 1px solid rgba(255, 255, 255, 0.05); position: relative; }
-        .section-title { font-size: clamp(2rem, 6vw, 2.5rem); font-weight: 700; text-align: center; margin-bottom: 60px; color: #ffffff; letter-spacing: -0.02em; }
+        .install-section { padding: 100px 24px; background: linear-gradient(180deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0) 100%); border-top: 1px solid rgba(255, 255, 255, 0.05); position: relative; z-index: 20; }
+        .section-title { font-size: clamp(2rem, 6vw, 2.5rem); font-weight: 700; text-align: center; margin-bottom: 60px; color: #ffffff; }
         .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 32px; max-width: 1100px; margin: 0 auto; }
-        .step { display: flex; flex-direction: column; gap: 20px; padding: 32px; background: linear-gradient(135deg, rgba(59, 130, 246, 0.06) 0%, rgba(37, 99, 235, 0.03) 100%); border: 1px solid rgba(59, 130, 246, 0.15); border-radius: 12px; transition: all 0.3s ease; position: relative; z-index: 2; }
-        .step:hover { border-color: rgba(59, 130, 246, 0.3); background: linear-gradient(135deg, rgba(59, 130, 246, 0.12) 0%, rgba(37, 99, 235, 0.06) 100%); transform: translateY(-4px); }
-        .step-badge { display: flex; align-items: center; justify-content: center; width: 56px; height: 56px; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); border-radius: 12px; font-weight: 700; color: #ffffff; font-size: 1.5rem; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); }
-        .step-title { font-size: 1.25rem; font-weight: 700; color: #ffffff; letter-spacing: -0.01em; }
+        .step { display: flex; flex-direction: column; gap: 20px; padding: 32px; background: linear-gradient(135deg, rgba(59, 130, 246, 0.06) 0%, rgba(37, 99, 235, 0.03) 100%); border: 1px solid rgba(59, 130, 246, 0.15); border-radius: 12px; transition: all 0.3s ease; }
+        .step:hover { border-color: rgba(59, 130, 246, 0.3); transform: translateY(-4px); }
+        .step-badge { display: flex; align-items: center; justify-content: center; width: 56px; height: 56px; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); border-radius: 12px; font-weight: 700; color: #ffffff; font-size: 1.5rem; }
+        .step-title { font-size: 1.25rem; font-weight: 700; color: #ffffff; }
         .step-description { font-size: 0.95rem; color: #a3a3a3; line-height: 1.7; }
-        .step-description strong { color: #e5e5e5; font-weight: 600; }
-        .step-description code { background: rgba(59, 130, 246, 0.1); color: #60a5fa; padding: 2px 6px; border-radius: 4px; font-family: 'Monaco', 'Courier New', monospace; font-size: 0.9em; }
+        .step-description strong { color: #e5e5e5; }
+        .step-description code { background: rgba(59, 130, 246, 0.1); color: #60a5fa; padding: 2px 6px; border-radius: 4px; font-family: monospace; }
         
-        /* Footer */
-        footer { padding: 60px 24px; border-top: 1px solid rgba(255, 255, 255, 0.05); text-align: center; background: rgba(10, 10, 10, 0.5); backdrop-filter: blur(10px); }
-        .footer-content { max-width: 800px; margin: 0 auto; }
+        footer { padding: 60px 24px; border-top: 1px solid rgba(255, 255, 255, 0.05); text-align: center; background: rgba(10, 10, 10, 0.5); backdrop-filter: blur(10px); position: relative; z-index: 20; }
         .footer-text { font-size: 0.95rem; color: #737373; margin-bottom: 16px; }
-        .footer-link { color: #60a5fa; text-decoration: none; transition: color 0.3s ease; }
-        .footer-link:hover { color: #93c5fd; text-decoration: underline; }
+        .footer-link { color: #60a5fa; text-decoration: none; }
+        .footer-link:hover { text-decoration: underline; }
         
-        @media (max-width: 640px) { h1 { margin-bottom: 20px; } .steps-grid { gap: 24px; grid-template-columns: 1fr; } .cursor-icon { display: none; } }
+        @media (max-width: 800px) { .scenery-layer { display: none; } .cursor-icon { display: none; } }
     </style>
 </head>
 <body>
-    <!-- Floating & Interactive Rainbow Cursor Icons -->
+    <!-- Chaos Scenery Layer (Desktop Only) -->
+    <div class="scenery-layer">
+        <!-- Shooting Stars -->
+        <div class="star"></div><div class="star"></div><div class="star"></div>
+
+        <!-- VIP Red Carpet -->
+        <div class="red-carpet-scene">
+            <div class="carpet"></div>
+            <svg class="vip-cursor" viewBox="0 0 24 24" fill="currentColor" stroke="black" stroke-width="1"><path d="M3 3l7.07 18.97a.5.5 0 0 0 .86.04l2.05-7.03a.5.5 0 0 1 .32-.32l7.05-2.05a.5.5 0 0 0 .04-.86L3 3z"/></svg>
+        </div>
+
+        <!-- Stick Figure Catching Cursor -->
+        <div class="catcher-scene">
+            <svg class="stick-figure" viewBox="0 0 100 100">
+                <circle cx="50" cy="20" r="10" /> <!-- Head -->
+                <line x1="50" y1="30" x2="50" y2="70" /> <!-- Body -->
+                <line x1="50" y1="40" x2="20" y2="20" /> <!-- Left Arm holding net -->
+                <line x1="50" y1="40" x2="80" y2="60" /> <!-- Right Arm -->
+                <line x1="50" y1="70" x2="30" y2="100" /> <!-- Left Leg -->
+                <line x1="50" y1="70" x2="70" y2="100" /> <!-- Right Leg -->
+                <!-- Net -->
+                <circle cx="15" cy="15" r="12" stroke="white" stroke-width="2" fill="rgba(255,255,255,0.2)"/>
+                <line x1="20" y1="20" x2="5" y2="40" stroke="white" stroke-width="2"/>
+            </svg>
+            <svg class="falling-cursor" viewBox="0 0 24 24" fill="currentColor" stroke="black" stroke-width="1"><path d="M3 3l7.07 18.97a.5.5 0 0 0 .86.04l2.05-7.03a.5.5 0 0 1 .32-.32l7.05-2.05a.5.5 0 0 0 .04-.86L3 3z"/></svg>
+        </div>
+
+        <!-- Aggressive Clicker -->
+        <div class="clicker-scene">
+            <div class="fake-button"></div>
+            <div class="ripple"></div>
+            <svg class="click-cursor" viewBox="0 0 24 24" fill="currentColor" stroke="white" stroke-width="1"><path d="M3 3l7.07 18.97a.5.5 0 0 0 .86.04l2.05-7.03a.5.5 0 0 1 .32-.32l7.05-2.05a.5.5 0 0 0 .04-.86L3 3z"/></svg>
+        </div>
+    </div>
+
+    <!-- Floating & Interactive Rainbow Cursor Icons (All 8 restored) -->
     <svg class="cursor-icon cursor-icon-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3l7.07 18.97a.5.5 0 0 0 .86.04l2.05-7.03a.5.5 0 0 1 .32-.32l7.05-2.05a.5.5 0 0 0 .04-.86L3 3z"></path></svg>
     <svg class="cursor-icon cursor-icon-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3l7.07 18.97a.5.5 0 0 0 .86.04l2.05-7.03a.5.5 0 0 1 .32-.32l7.05-2.05a.5.5 0 0 0 .04-.86L3 3z"></path></svg>
     <svg class="cursor-icon cursor-icon-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3l7.07 18.97a.5.5 0 0 0 .86.04l2.05-7.03a.5.5 0 0 1 .32-.32l7.05-2.05a.5.5 0 0 0 .04-.86L3 3z"></path></svg>
@@ -101,7 +162,7 @@
     <section class="hero">
         <div class="hero-content">
             <h1>Never lose your mouse cursor again.</h1>
-            <p class="hero-subtitle">Instantly teleport your cursor to the exact center of your screen with a quick <strong>trackpad shake</strong> or <strong>Cmd + Shift + M</strong>. Runs silently in the background on macOS.</p>
+            <p class="hero-subtitle">Instantly teleport your cursor to the exact center of your screen with a quick <strong>trackpad shake</strong> or <strong>Cmd + Control + M</strong>. Runs silently in the background on macOS.</p>
             
             <div class="button-group">
                 <a href="https://github.com/yoavharari/mouselocator/releases/download/v1.0.0/MouseLocator.zip" download class="button button-primary">Download for macOS (Free)</a>
@@ -118,32 +179,21 @@
     <section class="install-section">
         <div class="container">
             <h2 class="section-title">How to Install & Setup</h2>
-            
             <div class="steps-grid">
                 <div class="step">
                     <div class="step-badge">1</div>
                     <div class="step-title">Unzip</div>
-                    <div class="step-description">
-                        Extract the downloaded <code>MouseLocator.zip</code> file and drag <code>MouseLocator.app</code> into your <strong>Applications</strong> folder.
-                    </div>
+                    <div class="step-description">Extract the downloaded <code>MouseLocator.zip</code> file and drag <code>MouseLocator.app</code> into your <strong>Applications</strong> folder.</div>
                 </div>
-
                 <div class="step">
                     <div class="step-badge">2</div>
                     <div class="step-title">Bypass Gatekeeper</div>
-                    <div class="step-description">
-                        Double-click the app. If macOS says <em>"Apple could not verify..."</em>, click <strong>Done</strong>. Then go to <strong>System Settings → Privacy & Security</strong>, scroll down to the security section, and click <strong>Open Anyway</strong>.
-                    </div>
+                    <div class="step-description">Double-click the app. If macOS says <em>"Apple could not verify..."</em>, click <strong>Done</strong>. Then go to <strong>System Settings → Privacy & Security</strong>, scroll down, and click <strong>Open Anyway</strong>.</div>
                 </div>
-
                 <div class="step">
                     <div class="step-badge">3</div>
                     <div class="step-title">Grant Permissions</div>
-                    <div class="step-description">
-                        In System Settings, go to <strong>Privacy & Security</strong> and add MouseLocator to <strong>BOTH</strong> lists:<br><br>
-                        • <strong>Accessibility</strong> (needed to move the mouse)<br>
-                        • <strong>Input Monitoring</strong> (needed for the hotkey)
-                    </div>
+                    <div class="step-description">In System Settings, go to <strong>Privacy & Security</strong> and add MouseLocator to BOTH <strong>Accessibility</strong> and <strong>Input Monitoring</strong>.</div>
                 </div>
             </div>
         </div>
@@ -152,7 +202,7 @@
     <footer>
         <div class="footer-content">
             <p class="footer-text">&copy; 2026 MouseLocator. All rights reserved.</p>
-            <p class="footer-text">Have a question? <a href="https://paypal.me/yoavharari" target="_blank" rel="noopener noreferrer" class="footer-link">Get in touch</a></p>
+            <p class="footer-text">Have a question? <a href="https://paypal.me/yoavharari" target="_blank" class="footer-link">Get in touch</a></p>
         </div>
     </footer>
 </body>
