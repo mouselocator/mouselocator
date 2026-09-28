@@ -1060,151 +1060,121 @@ footer a {
     text-decoration: none;
 }
 
-/* Legal Popup Modal */
-.legal-popup-overlay {
+/* Legal Notice Banner (Bottom Right) */
+.legal-notice {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, .75);
-    z-index: 10000;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    max-width: 340px;
+    background: linear-gradient(135deg, #121826, #0c111d);
+    border: 1px solid rgba(120, 160, 255, .25);
+    border-radius: 14px;
+    padding: 16px 18px 16px 16px;
+    box-shadow: 0 12px 35px rgba(0, 0, 0, .55);
+    display: none;
+}
+
+.legal-notice.show {
+    display: block;
+    animation: slideInRight .35s ease-out;
+}
+
+@keyframes slideInRight {
+    from {
+        transform: translateX(40px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.legal-notice-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.legal-notice-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.legal-notice-close {
+    width: 24px;
+    height: 24px;
+    border: none;
+    background: rgba(255, 255, 255, .08);
+    border-radius: 6px;
+    color: #aab5c7;
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity .35s ease, visibility .35s ease;
+    transition: background .2s ease, color .2s ease;
 }
 
-.legal-popup-overlay.show {
-    opacity: 1;
-    visibility: visible;
-}
-
-.legal-popup {
-    position: relative;
-    width: min(680px, 92vw);
-    max-height: 82vh;
-    overflow-y: auto;
-    background: linear-gradient(135deg, #121826, #0c111d);
-    border: 1px solid rgba(120, 160, 255, .25);
-    border-radius: 18px;
-    padding: 32px 28px;
-    box-shadow: 0 25px 60px rgba(0, 0, 0, .65);
-    transform: translateY(25px) scale(.97);
-    transition: transform .35s ease;
-}
-
-.legal-popup-overlay.show .legal-popup {
-    transform: translateY(0) scale(1);
-}
-
-.legal-popup h2 {
-    margin: 0 0 16px;
-    font-size: 26px;
+.legal-notice-close:hover {
+    background: rgba(255, 255, 255, .15);
     color: #fff;
-    letter-spacing: -.03em;
 }
 
-.legal-popup p {
-    margin: 0 0 18px;
+.legal-notice p {
+    margin: 0 0 12px;
+    font-size: 13px;
     color: #b8c4d8;
-    line-height: 1.65;
-    font-size: 15px;
+    line-height: 1.5;
 }
 
-.legal-popup-links {
+.legal-notice-buttons {
     display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin: 22px 0 18px;
+    gap: 8px;
 }
 
-.legal-popup-links a {
+.legal-notice-buttons a {
     flex: 1;
-    min-width: 180px;
-    padding: 13px 18px;
-    border-radius: 11px;
+    padding: 9px 12px;
+    border-radius: 8px;
     text-align: center;
+    font-size: 12px;
     font-weight: 700;
     text-decoration: none;
-    transition: transform .2s ease, box-shadow .2s ease;
+    transition: transform .2s ease, opacity .2s ease;
 }
 
-.legal-popup-links a:hover {
+.legal-notice-buttons a:hover {
     transform: translateY(-2px);
 }
 
-.legal-popup-links .btn-tos {
+.legal-notice-buttons .btn-tos {
     background: linear-gradient(135deg, #5a94ff, #2b62d9);
     color: #fff;
-    box-shadow: 0 10px 24px rgba(43, 98, 217, .35);
 }
 
-.legal-popup-links .btn-privacy {
+.legal-notice-buttons .btn-privacy {
     border: 1px solid rgba(140, 180, 255, .35);
     background: rgba(90, 148, 255, .08);
     color: #9bc7ff;
 }
 
-.legal-popup-buttons {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 24px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, .08);
-}
-
-.legal-popup-buttons button {
-    padding: 11px 22px;
-    border-radius: 10px;
-    font-weight: 700;
-    font-size: 14px;
-    cursor: pointer;
-    transition: transform .2s ease, opacity .2s ease;
-}
-
-.legal-popup-buttons button:hover {
-    transform: translateY(-2px);
-}
-
-.legal-popup-buttons .btn-accept {
-    background: linear-gradient(135deg, #64adff, #236be5);
-    border: none;
-    color: #fff;
-    box-shadow: 0 10px 24px rgba(35, 107, 229, .35);
-}
-
-.legal-popup-buttons .btn-decline {
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, .25);
-    color: #aab5c7;
-}
-
 @media (max-width: 640px) {
-    .legal-popup {
-        padding: 24px 18px;
-    }
-
-    .legal-popup h2 {
-        font-size: 21px;
-    }
-
-    .legal-popup-links {
-        flex-direction: column;
-    }
-
-    .legal-popup-links a {
-        min-width: 100%;
+    .legal-notice {
+        bottom: 12px;
+        right: 12px;
+        left: 12px;
+        max-width: none;
     }
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .legal-popup-overlay,
-    .legal-popup {
-        transition: none !important;
+    .legal-notice {
+        animation: none !important;
     }
 }
 
@@ -1276,30 +1246,19 @@ footer a {
 
 <body>
 
-<!-- Legal Popup Modal -->
-<div class="legal-popup-overlay" id="legalPopup" role="dialog" aria-modal="true" aria-labelledby="legalPopupTitle">
-    <div class="legal-popup">
-        <h2 id="legalPopupTitle">Welcome to MouseLocator</h2>
-
-        <p>
-            Before you continue, please review our <strong>Terms of Service</strong> and <strong>Privacy Policy</strong>.
-            By using this website and downloading MouseLocator, you agree to these terms.
-        </p>
-
-        <p style="font-size:14px;opacity:.85;">
-            MouseLocator is a free macOS utility. We collect anonymous usage data to improve the project.
-            No personal data is stored or sold.
-        </p>
-
-        <div class="legal-popup-links">
-            <a class="btn-tos" href="tos.html" target="_blank" rel="noopener">Read Terms of Service</a>
-            <a class="btn-privacy" href="privacy.html" target="_blank" rel="noopener">Read Privacy Policy</a>
-        </div>
-
-        <div class="legal-popup-buttons">
-            <button class="btn-decline" id="btnDecline">Decline</button>
-            <button class="btn-accept" id="btnAccept">I Agree & Continue</button>
-        </div>
+<!-- Legal Notice Banner (Bottom Right) -->
+<div class="legal-notice" id="legalNotice" role="alert" aria-live="polite">
+    <div class="legal-notice-header">
+        <span class="legal-notice-title">Important Notice</span>
+        <button class="legal-notice-close" id="legalNoticeClose" aria-label="Dismiss notice" title="Dismiss">×</button>
+    </div>
+    <p>
+        By using this website and downloading MouseLocator, you agree to our
+        <strong>Terms of Service</strong> and <strong>Privacy Policy</strong>.
+    </p>
+    <div class="legal-notice-buttons">
+        <a class="btn-tos" href="tos.html" target="_blank" rel="noopener">Terms</a>
+        <a class="btn-privacy" href="privacy.html" target="_blank" rel="noopener">Privacy</a>
     </div>
 </div>
 
@@ -1517,57 +1476,30 @@ footer a {
 </footer>
 
 <script>
-// Legal Popup - Show once per visitor using localStorage
+// Legal Notice Banner - Show once per visitor using localStorage
 (function () {
-    var STORAGE_KEY = 'mouselocator_legal_consent';
-    var popup = document.getElementById('legalPopup');
-    var btnAccept = document.getElementById('btnAccept');
-    var btnDecline = document.getElementById('btnDecline');
+    var STORAGE_KEY = 'mouselocator_legal_notice_dismissed';
+    var notice = document.getElementById('legalNotice');
+    var closeBtn = document.getElementById('legalNoticeClose');
 
-    if (!popup || !btnAccept || !btnDecline) {
+    if (!notice || !closeBtn) {
         return;
     }
 
-    // Check if user has already accepted
-    var hasAccepted = localStorage.getItem(STORAGE_KEY) === 'true';
+    // Check if user has already dismissed
+    var isDismissed = localStorage.getItem(STORAGE_KEY) === 'true';
 
-    if (!hasAccepted) {
-        // Show popup after brief delay
+    if (!isDismissed) {
+        // Show notice after brief delay
         setTimeout(function () {
-            popup.classList.add('show');
-            document.body.style.overflow = 'hidden';
-        }, 400);
+            notice.classList.add('show');
+        }, 800);
     }
 
-    function closePopup() {
-        popup.classList.remove('show');
-        document.body.style.overflow = '';
-    }
-
-    btnAccept.addEventListener('click', function () {
+    // Close button functionality
+    closeBtn.addEventListener('click', function () {
+        notice.classList.remove('show');
         localStorage.setItem(STORAGE_KEY, 'true');
-        closePopup();
-    });
-
-    btnDecline.addEventListener('click', function () {
-        localStorage.setItem(STORAGE_KEY, 'false');
-        closePopup();
-    });
-
-    // Close on outside click
-    popup.addEventListener('click', function (e) {
-        if (e.target === popup) {
-            localStorage.setItem(STORAGE_KEY, 'false');
-            closePopup();
-        }
-    });
-
-    // Close on Escape key
-    document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && popup.classList.contains('show')) {
-            localStorage.setItem(STORAGE_KEY, 'false');
-            closePopup();
-        }
     });
 })();
 </script>
