@@ -619,7 +619,7 @@
             }
         }
 
-        /* Rogue cursor */
+        /* Rogue cursor roaming around the page */
         .rogue-cursor {
             position: fixed;
             z-index: 50;
@@ -677,6 +677,9 @@
             font-weight: 900;
             letter-spacing: 0.08em;
             white-space: nowrap;
+            opacity: 0;
+            transform: translateY(4px);
+            transition: opacity 0.25s ease, transform 0.25s ease;
         }
 
         @keyframes rogue-roam {
@@ -838,12 +841,6 @@
             box-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
         }
 
-        .qr-link {
-            display: block;
-            line-height: 0;
-            border-radius: 10px;
-        }
-
         .qr-image {
             width: 94px;
             height: 94px;
@@ -851,12 +848,11 @@
             border: 1px solid rgba(255, 255, 255, 0.12);
             border-radius: 10px;
             background: white;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease;
         }
 
-        .qr-link:hover .qr-image {
+        .qr-image:hover {
             transform: rotate(3deg) scale(1.05);
-            box-shadow: 0 0 22px rgba(90, 162, 255, 0.35);
         }
 
         .qr-copy {
@@ -968,145 +964,17 @@
             }
         }
 
-        /* Instructions page */
+        /* Installation section */
         .install-section {
             position: relative;
-            isolation: isolate;
             padding: 112px 24px 120px;
-            overflow: hidden;
             border-top: 1px solid rgba(255, 255, 255, 0.07);
             background:
                 linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 30%),
                 rgba(5, 7, 12, 0.46);
         }
 
-        .install-section::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            z-index: -3;
-            opacity: 0.72;
-            background:
-                linear-gradient(rgba(90, 162, 255, 0.06) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(90, 162, 255, 0.06) 1px, transparent 1px);
-            background-size: 42px 42px;
-            mask-image: linear-gradient(to bottom, transparent, black 18%, black 82%, transparent);
-        }
-
-        .install-section::after {
-            content: "";
-            position: absolute;
-            top: 50px;
-            right: -110px;
-            z-index: -2;
-            width: 440px;
-            height: 440px;
-            border: 1px solid rgba(90, 162, 255, 0.14);
-            border-radius: 50%;
-            box-shadow:
-                0 0 0 28px rgba(90, 162, 255, 0.035),
-                0 0 0 57px rgba(90, 162, 255, 0.025),
-                0 0 0 86px rgba(90, 162, 255, 0.018);
-        }
-
-        .control-orbit {
-            position: absolute;
-            top: 155px;
-            right: 80px;
-            z-index: -1;
-            width: 270px;
-            height: 270px;
-            border: 1px dashed rgba(116, 177, 255, 0.2);
-            border-radius: 50%;
-            animation: orbit-spin 28s linear infinite;
-        }
-
-        .control-orbit::before,
-        .control-orbit::after {
-            content: "";
-            position: absolute;
-            width: 11px;
-            height: 11px;
-            border-radius: 50%;
-            background: #5aa2ff;
-            box-shadow: 0 0 16px #5aa2ff;
-        }
-
-        .control-orbit::before {
-            top: 18px;
-            left: 48px;
-        }
-
-        .control-orbit::after {
-            right: 25px;
-            bottom: 52px;
-            background: #ef6b7f;
-            box-shadow: 0 0 16px #ef6b7f;
-        }
-
-        @keyframes orbit-spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .factory-line {
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 36px;
-            z-index: -1;
-            height: 1px;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(90, 162, 255, 0.24),
-                transparent
-            );
-        }
-
-        .factory-line::before,
-        .factory-line::after {
-            content: "";
-            position: absolute;
-            top: -3px;
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: #67aaff;
-            box-shadow: 0 0 13px #67aaff;
-            animation: conveyor-dot 7s linear infinite;
-        }
-
-        .factory-line::before {
-            left: 12%;
-        }
-
-        .factory-line::after {
-            left: 58%;
-            animation-delay: -3.5s;
-        }
-
-        @keyframes conveyor-dot {
-            0% {
-                transform: translateX(0);
-                opacity: 0;
-            }
-
-            10%,
-            85% {
-                opacity: 1;
-            }
-
-            100% {
-                transform: translateX(260px);
-                opacity: 0;
-            }
-        }
-
         .section-heading {
-            position: relative;
-            z-index: 2;
             max-width: 700px;
             margin: 0 auto 58px;
             text-align: center;
@@ -1136,8 +1004,6 @@
         }
 
         .steps-grid {
-            position: relative;
-            z-index: 2;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 22px;
@@ -1152,23 +1018,12 @@
             border-radius: 18px;
             background:
                 linear-gradient(145deg, rgba(50, 104, 201, 0.15), rgba(255, 255, 255, 0.025)),
-                rgba(12, 16, 26, 0.82);
-            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
+                rgba(12, 16, 26, 0.72);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.16);
             transition:
                 transform 0.3s ease,
                 border-color 0.3s ease,
                 background 0.3s ease;
-        }
-
-        .step::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 28px;
-            right: 28px;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #5aa2ff, transparent);
-            opacity: 0.55;
         }
 
         .step::after {
@@ -1186,7 +1041,7 @@
             border-color: rgba(90, 162, 255, 0.45);
             background:
                 linear-gradient(145deg, rgba(50, 104, 201, 0.22), rgba(255, 255, 255, 0.04)),
-                rgba(12, 16, 26, 0.92);
+                rgba(12, 16, 26, 0.84);
             transform: translateY(-7px);
         }
 
@@ -1271,13 +1126,6 @@
             outline-offset: 4px;
         }
 
-        @media (max-width: 900px) {
-            .control-orbit {
-                right: -80px;
-                opacity: 0.6;
-            }
-        }
-
         @media (max-width: 800px) {
             .steps-grid {
                 grid-template-columns: 1fr;
@@ -1290,12 +1138,6 @@
             .cursor-icon-7,
             .cursor-icon-8 {
                 display: none;
-            }
-
-            .control-orbit {
-                top: 360px;
-                right: -130px;
-                transform: scale(0.75);
             }
         }
 
@@ -1356,16 +1198,6 @@
                 padding-right: 16px;
                 padding-left: 16px;
             }
-
-            .control-orbit {
-                top: 420px;
-                right: -165px;
-                opacity: 0.35;
-            }
-
-            .factory-line {
-                bottom: 24px;
-            }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -1379,8 +1211,7 @@
             }
 
             .rogue-cursor,
-            .magic-puff,
-            .control-orbit {
+            .magic-puff {
                 display: none;
             }
         }
@@ -1502,19 +1333,7 @@
                 </div>
 
                 <div class="qr-section">
-                    <a
-                        class="qr-link"
-                        href="https://paypal.me/yoavharari"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label="Open PayPal donation page"
-                    >
-                        <img
-                            src="paypal-qr.png"
-                            alt="Scan to donate through PayPal"
-                            class="qr-image"
-                        >
-                    </a>
+                    <img src="paypal-qr.png" alt="PayPal QR Code" class="qr-image">
 
                     <div class="qr-copy">
                         <strong>Enjoying MouseLocator?</strong>
@@ -1533,12 +1352,9 @@
         </section>
 
         <section class="install-section" id="install">
-            <div class="control-orbit" aria-hidden="true"></div>
-            <div class="factory-line" aria-hidden="true"></div>
-
             <div class="container">
                 <div class="section-heading">
-                    <div class="section-kicker">Cursor control center</div>
+                    <div class="section-kicker">Three quick steps</div>
 
                     <h2 class="section-title">Ready in under a minute.</h2>
 
