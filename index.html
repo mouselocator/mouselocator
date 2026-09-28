@@ -76,7 +76,7 @@
             background: #dc2626;
         }
 
-        /* Floating colorful cursor icons */
+        /* Floating colorful cursors */
         .cursor-icon {
             position: absolute;
             z-index: 3;
@@ -273,84 +273,190 @@
             background: rgba(255, 255, 255, 0.09);
         }
 
-        /* Shooting stars */
-        .shooting-star {
+        /* Rocket cursors */
+        .rocket-cursor {
             position: absolute;
-            width: 92px;
-            height: 2px;
-            opacity: 0;
-            transform: rotate(-28deg);
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.95));
-            box-shadow: 0 0 12px #fff, 0 0 24px #80b8ff;
-            animation: shooting-star 5.8s linear infinite;
+            z-index: 4;
+            width: 70px;
+            height: 30px;
+            pointer-events: none;
+            transform: rotate(-18deg);
+            animation: rocket-flight 8s linear infinite;
         }
 
-        .shooting-star::after {
+        .rocket-cursor::before {
             content: "";
             position: absolute;
-            right: 0;
-            top: -3px;
-            width: 8px;
+            left: 19px;
+            top: 3px;
+            width: 46px;
+            height: 24px;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            border-radius: 70% 48% 48% 70%;
+            background: linear-gradient(135deg, #ffffff, #72adff 50%, #4d59c7);
+            box-shadow: 0 0 14px rgba(89, 168, 255, 0.8);
+        }
+
+        .rocket-cursor::after {
+            content: "";
+            position: absolute;
+            left: 51px;
+            top: 9px;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #142238;
+            box-shadow:
+                0 0 0 2px rgba(255, 255, 255, 0.35),
+                0 0 8px rgba(255, 255, 255, 0.7);
+        }
+
+        .rocket-fin {
+            position: absolute;
+            left: 37px;
+            top: 20px;
+            z-index: 2;
+            width: 18px;
+            height: 13px;
+            border-radius: 2px 2px 9px 2px;
+            background: #ed5770;
+            transform: skewX(-22deg);
+        }
+
+        .rocket-nose {
+            position: absolute;
+            left: 63px;
+            top: 7px;
+            z-index: 3;
+            width: 12px;
+            height: 16px;
+            border-radius: 0 100% 100% 0;
+            background: #ff8a5b;
+            transform: rotate(0deg);
+        }
+
+        .rocket-flame {
+            position: absolute;
+            left: 0;
+            top: 8px;
+            width: 31px;
+            height: 15px;
+            border-radius: 50% 0 0 50%;
+            background: linear-gradient(90deg, transparent, #ff3b30 28%, #ffbd45 68%, #fff2a6);
+            filter: blur(1px);
+            animation: flame-flicker 0.18s ease-in-out infinite alternate;
+        }
+
+        .rocket-flame::after {
+            content: "";
+            position: absolute;
+            left: -14px;
+            top: 4px;
+            width: 22px;
             height: 8px;
             border-radius: 50%;
-            background: white;
-            box-shadow: 0 0 12px #fff;
+            background: linear-gradient(90deg, transparent, #ff6b35);
+            filter: blur(2px);
         }
 
-        .shooting-star.one {
-            top: 16%;
-            right: 12%;
-            animation-delay: 1s;
+        .rocket-cursor.r1 {
+            top: 15%;
+            left: -100px;
+            animation-delay: -1s;
         }
 
-        .shooting-star.two {
-            top: 30%;
-            left: 9%;
-            transform: rotate(28deg);
-            animation-delay: 3.5s;
+        .rocket-cursor.r2 {
+            top: 34%;
+            right: -110px;
+            transform: rotate(166deg) scale(0.82);
+            animation-name: rocket-flight-reverse;
+            animation-delay: -4s;
         }
 
-        @keyframes shooting-star {
-            0%, 72% {
+        .rocket-cursor.r3 {
+            top: 58%;
+            left: -100px;
+            transform: rotate(-12deg) scale(0.68);
+            animation-delay: -5.5s;
+        }
+
+        .rocket-cursor.r4 {
+            top: 76%;
+            right: -110px;
+            transform: rotate(168deg) scale(0.92);
+            animation-name: rocket-flight-reverse;
+            animation-delay: -2.5s;
+        }
+
+        @keyframes rocket-flight {
+            0% {
+                left: -110px;
                 opacity: 0;
-                transform: translate(0, 0) rotate(-28deg);
+                transform: translateY(22px) rotate(-18deg) scale(0.88);
             }
 
-            76% {
-                opacity: 0.9;
+            8% {
+                opacity: 1;
             }
 
-            88%, 100% {
+            42% {
+                transform: translateY(-34px) rotate(-12deg) scale(1);
+            }
+
+            78% {
+                opacity: 1;
+            }
+
+            100% {
+                left: calc(100% + 110px);
                 opacity: 0;
-                transform: translate(-150px, 100px) rotate(-28deg);
+                transform: translateY(28px) rotate(-23deg) scale(0.9);
             }
         }
 
-        @keyframes shooting-star-two {
-            0%, 72% {
+        @keyframes rocket-flight-reverse {
+            0% {
+                right: -110px;
                 opacity: 0;
-                transform: translate(0, 0) rotate(28deg);
+                transform: translateY(-18px) rotate(166deg) scale(0.82);
             }
 
-            76% {
-                opacity: 0.9;
+            8% {
+                opacity: 1;
             }
 
-            88%, 100% {
+            45% {
+                transform: translateY(32px) rotate(174deg) scale(0.95);
+            }
+
+            78% {
+                opacity: 1;
+            }
+
+            100% {
+                right: calc(100% + 110px);
                 opacity: 0;
-                transform: translate(150px, 100px) rotate(28deg);
+                transform: translateY(-27px) rotate(160deg) scale(0.84);
             }
         }
 
-        .shooting-star.two {
-            animation-name: shooting-star-two;
+        @keyframes flame-flicker {
+            from {
+                transform: scaleX(0.82) scaleY(0.85);
+                opacity: 0.72;
+            }
+
+            to {
+                transform: scaleX(1.18) scaleY(1.08);
+                opacity: 1;
+            }
         }
 
-        /* Red carpet scene */
+        /* Red carpet */
         .carpet-scene {
             position: relative;
             width: min(580px, 94vw);
-            height: 188px;
+            height: 230px;
             margin: 0 auto;
             perspective: 700px;
         }
@@ -359,7 +465,7 @@
             position: absolute;
             left: 6%;
             right: 6%;
-            bottom: 14px;
+            bottom: 13px;
             height: 92px;
             border: 1px solid rgba(255, 176, 176, 0.3);
             border-radius: 12px 12px 5px 5px;
@@ -404,7 +510,7 @@
             position: absolute;
             right: 2%;
             bottom: 0;
-            z-index: 3;
+            z-index: 8;
             padding: 3px 8px;
             transform: rotate(-8deg);
             color: #ffd6d6;
@@ -417,209 +523,265 @@
             text-transform: uppercase;
         }
 
-        .scene-cursor {
+        /* Cursors being carried onto the carpet */
+        .carpet-cursor {
             position: absolute;
-            z-index: 4;
-            width: 29px;
-            height: 39px;
-            filter: drop-shadow(0 5px 5px rgba(0, 0, 0, 0.4));
-            animation: cursor-route 7s ease-in-out infinite;
+            z-index: 6;
+            width: 25px;
+            height: 35px;
+            filter: drop-shadow(0 5px 4px rgba(0, 0, 0, 0.45));
         }
 
-        .scene-cursor::before {
+        .carpet-cursor::before {
             content: "";
             position: absolute;
             inset: 0;
             clip-path: polygon(5% 2%, 91% 65%, 57% 67%, 75% 97%, 61% 100%, 43% 70%, 20% 92%);
-            background: white;
+            background: #ffffff;
         }
 
-        .scene-cursor::after {
+        .carpet-cursor::after {
             content: "";
             position: absolute;
-            inset: 3px 3px 4px 4px;
+            inset: 3px;
             clip-path: polygon(5% 2%, 91% 65%, 57% 67%, 75% 97%, 61% 100%, 43% 70%, 20% 92%);
-            background: #273244;
+            background: linear-gradient(135deg, #4ca3ff, #8e4de8);
         }
 
-        .scene-cursor.one {
-            left: 17%;
-            top: 25px;
-            animation-delay: -1s;
+        .carpet-cursor.one {
+            left: 42%;
+            bottom: 54px;
+            transform: rotate(12deg);
+            animation: place-cursor-one 5.5s ease-in-out infinite;
         }
 
-        .scene-cursor.two {
-            left: 49%;
-            top: 56px;
-            animation-name: cursor-route-two;
-            animation-delay: -4s;
+        .carpet-cursor.two {
+            left: 55%;
+            bottom: 49px;
+            transform: rotate(-15deg) scale(0.85);
+            animation: place-cursor-two 6.2s ease-in-out infinite;
         }
 
-        .scene-cursor.three {
-            right: 17%;
-            top: 18px;
-            animation-name: cursor-route-three;
-            animation-delay: -2.6s;
-        }
-
-        @keyframes cursor-route {
+        @keyframes place-cursor-one {
             0%, 100% {
-                transform: translate(0, 0) rotate(-9deg);
+                transform: translateY(-40px) rotate(12deg);
             }
 
-            28% {
-                transform: translate(68px, 26px) rotate(9deg);
-            }
-
-            55% {
-                transform: translate(128px, -4px) rotate(-14deg);
-            }
-
-            78% {
-                transform: translate(45px, 42px) rotate(8deg);
+            45%, 70% {
+                transform: translateY(0) rotate(12deg);
             }
         }
 
-        @keyframes cursor-route-two {
+        @keyframes place-cursor-two {
             0%, 100% {
-                transform: translate(0, 0) rotate(12deg) scale(0.78);
+                transform: translateY(-49px) rotate(-15deg) scale(0.85);
             }
 
-            34% {
-                transform: translate(-95px, 28px) rotate(-14deg) scale(0.78);
-            }
-
-            64% {
-                transform: translate(-38px, -24px) rotate(10deg) scale(0.78);
+            42%, 72% {
+                transform: translateY(5px) rotate(-15deg) scale(0.85);
             }
         }
 
-        @keyframes cursor-route-three {
-            0%, 100% {
-                transform: translate(0, 0) rotate(-12deg) scale(0.62);
-            }
-
-            40% {
-                transform: translate(-72px, 35px) rotate(13deg) scale(0.62);
-            }
-
-            72% {
-                transform: translate(-120px, 4px) rotate(-5deg) scale(0.62);
-            }
-        }
-
-        /* Stick figures */
-        .stick-figure {
+        /* Human-like cartoon boys */
+        .boy {
             position: absolute;
-            z-index: 5;
-            bottom: 66px;
-            width: 60px;
-            height: 88px;
-            color: #f6d49b;
-            animation: figure-bob 2.4s ease-in-out infinite;
+            z-index: 7;
+            bottom: 51px;
+            width: 92px;
+            height: 145px;
+            animation: boy-breath 2.8s ease-in-out infinite;
         }
 
-        .stick-figure.left {
-            left: 10%;
+        .boy.left {
+            left: 6%;
         }
 
-        .stick-figure.right {
-            right: 10%;
-            transform: scaleX(-1);
-            animation-name: figure-bob-right;
-            animation-delay: -1s;
+        .boy.right {
+            right: 6%;
+            animation-delay: -1.4s;
         }
 
-        .stick-head {
+        .boy-head {
             position: absolute;
-            top: 0;
-            left: 22px;
-            width: 24px;
-            height: 24px;
-            border: 3px solid currentColor;
+            top: 5px;
+            left: 30px;
+            width: 42px;
+            height: 45px;
+            border: 2px solid rgba(0, 0, 0, 0.45);
+            border-radius: 48% 48% 45% 45%;
+            background: #d89469;
+            box-shadow: inset -7px -4px 0 rgba(113, 53, 43, 0.16);
+        }
+
+        .boy-head::before {
+            content: "";
+            position: absolute;
+            top: -7px;
+            left: -2px;
+            width: 45px;
+            height: 18px;
+            border-radius: 60% 55% 35% 30%;
+            background: #3b241f;
+            transform: rotate(-7deg);
+        }
+
+        .boy-head::after {
+            content: "•  •";
+            position: absolute;
+            top: 20px;
+            left: 9px;
+            color: #261719;
+            font-size: 9px;
+            letter-spacing: 6px;
+            white-space: nowrap;
+        }
+
+        .boy-ear {
+            position: absolute;
+            top: 24px;
+            width: 8px;
+            height: 12px;
             border-radius: 50%;
-            background: #241c1d;
+            background: #c47a5d;
         }
 
-        .stick-body,
-        .stick-arm,
-        .stick-leg {
+        .boy-ear.left-ear {
+            left: 25px;
+        }
+
+        .boy-ear.right-ear {
+            right: 17px;
+        }
+
+        .boy-body {
             position: absolute;
-            width: 3px;
-            border-radius: 4px;
-            background: currentColor;
+            top: 52px;
+            left: 19px;
+            width: 63px;
+            height: 59px;
+            border: 2px solid rgba(0, 0, 0, 0.25);
+            border-radius: 22px 22px 9px 9px;
+            background: linear-gradient(135deg, #347ee7, #19439a);
+        }
+
+        .boy-body::before {
+            content: "M";
+            position: absolute;
+            top: 17px;
+            left: 22px;
+            color: rgba(255, 255, 255, 0.85);
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        .boy-arm {
+            position: absolute;
+            top: 58px;
+            width: 15px;
+            height: 62px;
+            border-radius: 12px;
+            background: #d89469;
             transform-origin: top center;
         }
 
-        .stick-body {
-            top: 25px;
-            left: 33px;
-            height: 38px;
+        .boy-arm.left-arm {
+            left: 10px;
+            transform: rotate(37deg);
         }
 
-        .stick-arm {
-            top: 32px;
-            left: 33px;
-            height: 30px;
+        .boy-arm.right-arm {
+            right: 4px;
+            transform: rotate(-58deg);
         }
 
-        .stick-arm.one {
-            transform: rotate(62deg);
-        }
-
-        .stick-arm.two {
-            transform: rotate(-65deg);
-        }
-
-        .stick-leg {
-            top: 61px;
-            left: 33px;
-            height: 31px;
-        }
-
-        .stick-leg.one {
-            transform: rotate(28deg);
-        }
-
-        .stick-leg.two {
-            transform: rotate(-28deg);
-        }
-
-        .catch-label {
+        .boy-hand {
             position: absolute;
-            top: -31px;
-            left: -13px;
+            width: 17px;
+            height: 17px;
+            border-radius: 50%;
+            background: #d89469;
+        }
+
+        .boy-hand.left-hand {
+            left: 0;
+            top: 108px;
+        }
+
+        .boy-hand.right-hand {
+            right: -1px;
+            top: 105px;
+        }
+
+        .boy-leg {
+            position: absolute;
+            top: 105px;
+            width: 19px;
+            height: 46px;
+            border-radius: 0 0 10px 10px;
+            background: #26334d;
+        }
+
+        .boy-leg.left-leg {
+            left: 26px;
+            transform: rotate(5deg);
+        }
+
+        .boy-leg.right-leg {
+            right: 22px;
+            transform: rotate(-8deg);
+        }
+
+        .boy-shoe {
+            position: absolute;
+            top: 140px;
+            width: 31px;
+            height: 13px;
+            border-radius: 14px 14px 5px 5px;
+            background: #e7edf7;
+            box-shadow: inset 0 -4px 0 #8390a5;
+        }
+
+        .boy-shoe.left-shoe {
+            left: 15px;
+        }
+
+        .boy-shoe.right-shoe {
+            right: 9px;
+        }
+
+        .boy-caption {
+            position: absolute;
+            top: -25px;
+            left: 0;
             padding: 3px 7px;
-            color: #ffd9a4;
-            border: 1px solid rgba(255, 217, 164, 0.24);
+            border: 1px solid rgba(255, 219, 157, 0.28);
             border-radius: 5px;
-            background: rgba(40, 22, 17, 0.72);
-            font-size: 0.62rem;
+            color: #ffe0af;
+            background: rgba(52, 26, 19, 0.8);
+            font-size: 0.61rem;
             font-weight: 800;
             white-space: nowrap;
         }
 
-        @keyframes figure-bob {
+        .boy.left .boy-caption {
+            transform: rotate(-5deg);
+        }
+
+        .boy.right .boy-caption {
+            transform: rotate(5deg);
+        }
+
+        @keyframes boy-breath {
             0%, 100% {
-                transform: translateY(0) rotate(-2deg);
+                transform: translateY(0) rotate(-1deg);
             }
 
             50% {
-                transform: translateY(-5px) rotate(2deg);
+                transform: translateY(-3px) rotate(1deg);
             }
         }
 
-        @keyframes figure-bob-right {
-            0%, 100% {
-                transform: translateY(0) scaleX(-1) rotate(-2deg);
-            }
-
-            50% {
-                transform: translateY(-5px) scaleX(-1) rotate(2deg);
-            }
-        }
-
-        /* Rogue cursor roaming around the page */
+        /* Rogue cursor */
         .rogue-cursor {
             position: fixed;
             z-index: 50;
@@ -677,9 +839,6 @@
             font-weight: 900;
             letter-spacing: 0.08em;
             white-space: nowrap;
-            opacity: 0;
-            transform: translateY(4px);
-            transition: opacity 0.25s ease, transform 0.25s ease;
         }
 
         @keyframes rogue-roam {
@@ -738,7 +897,7 @@
             }
         }
 
-        /* Magical puff following the user's real cursor */
+        /* Magical puff */
         .magic-puff {
             position: fixed;
             z-index: 100;
@@ -841,6 +1000,12 @@
             box-shadow: 0 12px 35px rgba(0, 0, 0, 0.18);
         }
 
+        .qr-link {
+            display: block;
+            line-height: 0;
+            border-radius: 10px;
+        }
+
         .qr-image {
             width: 94px;
             height: 94px;
@@ -848,11 +1013,12 @@
             border: 1px solid rgba(255, 255, 255, 0.12);
             border-radius: 10px;
             background: white;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .qr-image:hover {
+        .qr-link:hover .qr-image {
             transform: rotate(3deg) scale(1.05);
+            box-shadow: 0 0 22px rgba(90, 162, 255, 0.35);
         }
 
         .qr-copy {
@@ -964,17 +1130,144 @@
             }
         }
 
-        /* Installation section */
+        /* Instructions page */
         .install-section {
             position: relative;
+            isolation: isolate;
             padding: 112px 24px 120px;
+            overflow: hidden;
             border-top: 1px solid rgba(255, 255, 255, 0.07);
             background:
                 linear-gradient(180deg, rgba(255, 255, 255, 0.025), transparent 30%),
                 rgba(5, 7, 12, 0.46);
         }
 
+        .install-section::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            z-index: -3;
+            opacity: 0.72;
+            background:
+                linear-gradient(rgba(90, 162, 255, 0.06) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(90, 162, 255, 0.06) 1px, transparent 1px);
+            background-size: 42px 42px;
+            mask-image: linear-gradient(to bottom, transparent, black 18%, black 82%, transparent);
+        }
+
+        .install-section::after {
+            content: "";
+            position: absolute;
+            top: 50px;
+            right: -110px;
+            z-index: -2;
+            width: 440px;
+            height: 440px;
+            border: 1px solid rgba(90, 162, 255, 0.14);
+            border-radius: 50%;
+            box-shadow:
+                0 0 0 28px rgba(90, 162, 255, 0.035),
+                0 0 0 57px rgba(90, 162, 255, 0.025),
+                0 0 0 86px rgba(90, 162, 255, 0.018);
+        }
+
+        .control-orbit {
+            position: absolute;
+            top: 155px;
+            right: 80px;
+            z-index: -1;
+            width: 270px;
+            height: 270px;
+            border: 1px dashed rgba(116, 177, 255, 0.2);
+            border-radius: 50%;
+            animation: orbit-spin 28s linear infinite;
+        }
+
+        .control-orbit::before,
+        .control-orbit::after {
+            content: "";
+            position: absolute;
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: #5aa2ff;
+            box-shadow: 0 0 16px #5aa2ff;
+        }
+
+        .control-orbit::before {
+            top: 18px;
+            left: 48px;
+        }
+
+        .control-orbit::after {
+            right: 25px;
+            bottom: 52px;
+            background: #ef6b7f;
+            box-shadow: 0 0 16px #ef6b7f;
+        }
+
+        @keyframes orbit-spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .factory-line {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 36px;
+            z-index: -1;
+            height: 1px;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(90, 162, 255, 0.24),
+                transparent
+            );
+        }
+
+        .factory-line::before,
+        .factory-line::after {
+            content: "";
+            position: absolute;
+            top: -3px;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #67aaff;
+            box-shadow: 0 0 13px #67aaff;
+            animation: conveyor-dot 7s linear infinite;
+        }
+
+        .factory-line::before {
+            left: 12%;
+        }
+
+        .factory-line::after {
+            left: 58%;
+            animation-delay: -3.5s;
+        }
+
+        @keyframes conveyor-dot {
+            0% {
+                transform: translateX(0);
+                opacity: 0;
+            }
+
+            10%, 85% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateX(260px);
+                opacity: 0;
+            }
+        }
+
         .section-heading {
+            position: relative;
+            z-index: 2;
             max-width: 700px;
             margin: 0 auto 58px;
             text-align: center;
@@ -1004,6 +1297,8 @@
         }
 
         .steps-grid {
+            position: relative;
+            z-index: 2;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 22px;
@@ -1018,12 +1313,23 @@
             border-radius: 18px;
             background:
                 linear-gradient(145deg, rgba(50, 104, 201, 0.15), rgba(255, 255, 255, 0.025)),
-                rgba(12, 16, 26, 0.72);
-            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.16);
+                rgba(12, 16, 26, 0.82);
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.22);
             transition:
                 transform 0.3s ease,
                 border-color 0.3s ease,
                 background 0.3s ease;
+        }
+
+        .step::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 28px;
+            right: 28px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #5aa2ff, transparent);
+            opacity: 0.55;
         }
 
         .step::after {
@@ -1041,7 +1347,7 @@
             border-color: rgba(90, 162, 255, 0.45);
             background:
                 linear-gradient(145deg, rgba(50, 104, 201, 0.22), rgba(255, 255, 255, 0.04)),
-                rgba(12, 16, 26, 0.84);
+                rgba(12, 16, 26, 0.92);
             transform: translateY(-7px);
         }
 
@@ -1126,6 +1432,13 @@
             outline-offset: 4px;
         }
 
+        @media (max-width: 900px) {
+            .control-orbit {
+                right: -80px;
+                opacity: 0.6;
+            }
+        }
+
         @media (max-width: 800px) {
             .steps-grid {
                 grid-template-columns: 1fr;
@@ -1138,6 +1451,12 @@
             .cursor-icon-7,
             .cursor-icon-8 {
                 display: none;
+            }
+
+            .control-orbit {
+                top: 360px;
+                right: -130px;
+                transform: scale(0.75);
             }
         }
 
@@ -1176,17 +1495,17 @@
             }
 
             .carpet-scene {
-                height: 160px;
-                transform: scale(0.85);
+                height: 200px;
+                transform: scale(0.78);
                 transform-origin: top center;
             }
 
-            .stick-figure.left {
-                left: 3%;
+            .boy.left {
+                left: -1%;
             }
 
-            .stick-figure.right {
-                right: 3%;
+            .boy.right {
+                right: -1%;
             }
 
             .cursor-icon,
@@ -1197,6 +1516,16 @@
             .install-section {
                 padding-right: 16px;
                 padding-left: 16px;
+            }
+
+            .control-orbit {
+                top: 420px;
+                right: -165px;
+                opacity: 0.35;
+            }
+
+            .factory-line {
+                bottom: 24px;
             }
         }
 
@@ -1211,7 +1540,8 @@
             }
 
             .rogue-cursor,
-            .magic-puff {
+            .magic-puff,
+            .control-orbit {
                 display: none;
             }
         }
@@ -1221,12 +1551,10 @@
 <body>
     <div class="ambient" aria-hidden="true"></div>
 
-    <!-- Rogue cursor -->
     <div class="rogue-cursor" aria-hidden="true">
         <span class="rogue-cursor-label">ROGUE</span>
     </div>
 
-    <!-- Magical puff that follows the user's cursor -->
     <div class="magic-puff" aria-hidden="true">
         <span></span>
         <span></span>
@@ -1270,8 +1598,29 @@
 
     <main>
         <section class="hero" id="top">
-            <div class="shooting-star one" aria-hidden="true"></div>
-            <div class="shooting-star two" aria-hidden="true"></div>
+            <div class="rocket-cursor r1" aria-hidden="true">
+                <span class="rocket-flame"></span>
+                <span class="rocket-fin"></span>
+                <span class="rocket-nose"></span>
+            </div>
+
+            <div class="rocket-cursor r2" aria-hidden="true">
+                <span class="rocket-flame"></span>
+                <span class="rocket-fin"></span>
+                <span class="rocket-nose"></span>
+            </div>
+
+            <div class="rocket-cursor r3" aria-hidden="true">
+                <span class="rocket-flame"></span>
+                <span class="rocket-fin"></span>
+                <span class="rocket-nose"></span>
+            </div>
+
+            <div class="rocket-cursor r4" aria-hidden="true">
+                <span class="rocket-flame"></span>
+                <span class="rocket-fin"></span>
+                <span class="rocket-nose"></span>
+            </div>
 
             <div class="hero-content">
                 <div class="eyebrow">A tiny macOS utility with one job</div>
@@ -1303,37 +1652,60 @@
                     </a>
                 </div>
 
-                <div class="carpet-scene" aria-hidden="true">
+                <div class="carpet-scene" aria-label="Two boys playing catch with cursors on a red carpet">
                     <div class="carpet"></div>
                     <div class="carpet-label">Official cursor runway</div>
 
-                    <div class="scene-cursor one"></div>
-                    <div class="scene-cursor two"></div>
-                    <div class="scene-cursor three"></div>
+                    <div class="carpet-cursor one"></div>
+                    <div class="carpet-cursor two"></div>
 
-                    <div class="stick-figure left">
-                        <span class="catch-label">gotcha?</span>
-                        <span class="stick-head"></span>
-                        <span class="stick-body"></span>
-                        <span class="stick-arm one"></span>
-                        <span class="stick-arm two"></span>
-                        <span class="stick-leg one"></span>
-                        <span class="stick-leg two"></span>
+                    <div class="boy left">
+                        <span class="boy-caption">Catch it!</span>
+                        <span class="boy-head"></span>
+                        <span class="boy-ear left-ear"></span>
+                        <span class="boy-ear right-ear"></span>
+                        <span class="boy-body"></span>
+                        <span class="boy-arm left-arm"></span>
+                        <span class="boy-arm right-arm"></span>
+                        <span class="boy-hand left-hand"></span>
+                        <span class="boy-hand right-hand"></span>
+                        <span class="boy-leg left-leg"></span>
+                        <span class="boy-leg right-leg"></span>
+                        <span class="boy-shoe left-shoe"></span>
+                        <span class="boy-shoe right-shoe"></span>
                     </div>
 
-                    <div class="stick-figure right">
-                        <span class="catch-label">come back!</span>
-                        <span class="stick-head"></span>
-                        <span class="stick-body"></span>
-                        <span class="stick-arm one"></span>
-                        <span class="stick-arm two"></span>
-                        <span class="stick-leg one"></span>
-                        <span class="stick-leg two"></span>
+                    <div class="boy right">
+                        <span class="boy-caption">On the carpet!</span>
+                        <span class="boy-head"></span>
+                        <span class="boy-ear left-ear"></span>
+                        <span class="boy-ear right-ear"></span>
+                        <span class="boy-body"></span>
+                        <span class="boy-arm left-arm"></span>
+                        <span class="boy-arm right-arm"></span>
+                        <span class="boy-hand left-hand"></span>
+                        <span class="boy-hand right-hand"></span>
+                        <span class="boy-leg left-leg"></span>
+                        <span class="boy-leg right-leg"></span>
+                        <span class="boy-shoe left-shoe"></span>
+                        <span class="boy-shoe right-shoe"></span>
                     </div>
                 </div>
 
                 <div class="qr-section">
-                    <img src="paypal-qr.png" alt="PayPal QR Code" class="qr-image">
+                    <a
+                        class="qr-link"
+                        href="https://paypal.me/yoavharari"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label="Open PayPal donation page"
+                    >
+                        <img
+                            src="paypal-qr.png"
+                            alt="Scan to donate through PayPal"
+                            class="qr-image"
+                        >
+                    </a>
 
                     <div class="qr-copy">
                         <strong>Enjoying MouseLocator?</strong>
@@ -1352,9 +1724,12 @@
         </section>
 
         <section class="install-section" id="install">
+            <div class="control-orbit" aria-hidden="true"></div>
+            <div class="factory-line" aria-hidden="true"></div>
+
             <div class="container">
                 <div class="section-heading">
-                    <div class="section-kicker">Three quick steps</div>
+                    <div class="section-kicker">Cursor control center</div>
 
                     <h2 class="section-title">Ready in under a minute.</h2>
 
