@@ -7,9 +7,6 @@
     <!-- CLOUDFLARE TRACKING SCRIPT -->
     <script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "08c761a993e44c2e9c601e5a0c7cd2ac"}'></script>
     
-    <!-- HARD-CODED BROWSER REDIRECT (Forces redirect to homepage after 5 seconds) -->
-    <meta http-equiv="refresh" content="5; url=index.html#install">
-
     <style>
         body {
             background: #080b12;
@@ -46,6 +43,10 @@
         .btn-back:hover {
             background: rgba(90,162,255,.2);
         }
+        /* Hides the download frame completely */
+        #downloadFrame {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -65,16 +66,19 @@
         <a href="index.html#install" class="btn-back">Go to Instructions Now</a>
     </div>
 
-    <!-- JAVASCRIPT GHOST CLICK (Mimics a real download click immediately) -->
+    <!-- INVISIBLE IFRAME (Forces download without breaking the page) -->
+    <iframe id="downloadFrame"></iframe>
+
     <script>
+        // 1. Tell the invisible iframe to load the zip file (starts download)
         setTimeout(function() {
-            var ghostLink = document.createElement('a');
-            ghostLink.href = "https://github.com/mouselocator/mouselocator/releases/download/v1.0.0/MouseLocator.zip";
-            ghostLink.download = "MouseLocator.zip";
-            document.body.appendChild(ghostLink);
-            ghostLink.click();
-            document.body.removeChild(ghostLink);
+            document.getElementById('downloadFrame').src = "https://github.com/mouselocator/mouselocator/releases/download/v1.0.0/MouseLocator.zip";
         }, 500);
+
+        // 2. Redirect the main page back to the instructions after 5 seconds
+        setTimeout(function() {
+            window.location.href = "index.html#install";
+        }, 5000);
     </script>
 </body>
 </html>
