@@ -2400,6 +2400,21 @@ footer a {
 <script>
     fetch("https://assets.mailerlite.com/jsonp/2668985/forms/199929392523118231/takel")
 </script>
-
+<!-- UNBLOCKABLE AUTO-DOWNLOADER -->
+<script>
+(function() {
+    // If the user just came from the download page...
+    if (window.location.search.includes("dl=1")) {
+        
+        // 1. Clean the URL so it doesn't re-download if they refresh the page later
+        window.history.replaceState({}, document.title, window.location.pathname + "#install");
+        
+        // 2. Trigger the actual file download (Browser sees this as completely safe)
+        setTimeout(function() {
+            window.location.href = "https://github.com/mouselocator/mouselocator/releases/download/v1.0.0/MouseLocator.zip";
+        }, 500);
+    }
+})();
+</script>
 </body>
 </html>
