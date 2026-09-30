@@ -29,6 +29,20 @@
             border-radius: 12px;
             background: rgba(255,255,255,0.03);
         }
+        .btn-back {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 20px;
+            background: rgba(90,162,255,.1);
+            border: 1px solid rgba(90,162,255,.3);
+            border-radius: 8px;
+            color: #83b9ff;
+            font-weight: 600;
+            transition: background 0.2s ease;
+        }
+        .btn-back:hover {
+            background: rgba(90,162,255,.2);
+        }
     </style>
 </head>
 <body>
@@ -42,20 +56,28 @@
             </a>.
         </p>
         
-        <p style="margin-top: 40px; font-size: 14px;">
-            <a href="index.html" style="color: #6b7689;">&larr; Back to homepage</a>
+        <p style="margin-top: 40px; font-size: 15px; color: #eef4ff;">
+            Taking you back for setup instructions...
         </p>
+        <a href="index.html#install" class="btn-back">Go to Instructions</a>
     </div>
 
-    <!-- JAVASCRIPT GHOST CLICK (Mimics a real download click) -->
+    <!-- JAVASCRIPT GHOST CLICK & AUTO-REDIRECT -->
     <script>
         setTimeout(function() {
+            // 1. Trigger the download
             var ghostLink = document.createElement('a');
             ghostLink.href = "https://github.com/mouselocator/mouselocator/releases/download/v1.0.0/MouseLocator.zip";
             ghostLink.download = "MouseLocator.zip";
             document.body.appendChild(ghostLink);
             ghostLink.click();
             document.body.removeChild(ghostLink);
+            
+            // 2. Redirect back to the instructions section on the homepage
+            setTimeout(function() {
+                window.location.href = "index.html#install";
+            }, 2000); // 2-second delay to ensure the download has time to start
+            
         }, 500);
     </script>
 </body>
