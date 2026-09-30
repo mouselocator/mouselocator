@@ -7,6 +7,9 @@
     <!-- CLOUDFLARE TRACKING SCRIPT -->
     <script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "08c761a993e44c2e9c601e5a0c7cd2ac"}'></script>
     
+    <!-- HARD-CODED BROWSER REDIRECT (Forces redirect to homepage after 5 seconds) -->
+    <meta http-equiv="refresh" content="5; url=index.html#install">
+
     <style>
         body {
             background: #080b12;
@@ -57,27 +60,20 @@
         </p>
         
         <p style="margin-top: 40px; font-size: 15px; color: #eef4ff;">
-            Taking you back for setup instructions...
+            Taking you back for setup instructions in 5 seconds...
         </p>
-        <a href="index.html#install" class="btn-back">Go to Instructions</a>
+        <a href="index.html#install" class="btn-back">Go to Instructions Now</a>
     </div>
 
-    <!-- JAVASCRIPT GHOST CLICK & AUTO-REDIRECT -->
+    <!-- JAVASCRIPT GHOST CLICK (Mimics a real download click immediately) -->
     <script>
         setTimeout(function() {
-            // 1. Trigger the download
             var ghostLink = document.createElement('a');
             ghostLink.href = "https://github.com/mouselocator/mouselocator/releases/download/v1.0.0/MouseLocator.zip";
             ghostLink.download = "MouseLocator.zip";
             document.body.appendChild(ghostLink);
             ghostLink.click();
             document.body.removeChild(ghostLink);
-            
-            // 2. Redirect back to the instructions section on the homepage
-            setTimeout(function() {
-                window.location.href = "index.html#install";
-            }, 2000); // 2-second delay to ensure the download has time to start
-            
         }, 500);
     </script>
 </body>
