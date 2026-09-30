@@ -31,6 +31,15 @@ a {
     color: inherit;
 }
 
+kbd {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    padding: 2px 6px;
+    font-size: 0.85em;
+    color: #fff;
+}
+
 .hero {
     position: relative;
     min-height: 100vh;
@@ -1850,6 +1859,83 @@ footer a {
           padding: 28px 20px 8px;
         }
       }
+
+/* CSS Styles for Socials Section */
+.socials-section {
+  padding: 60px 20px;
+  background: rgba(255, 255, 255, 0.02);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.socials-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.socials-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+
+.socials-subtitle {
+  font-size: 0.95rem;
+  color: #a1a1aa;
+  margin-bottom: 32px;
+}
+
+.socials-links {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.social-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.25s ease;
+}
+
+.social-card:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+.social-icon {
+  width: 22px;
+  height: 22px;
+  color: #ffffff;
+}
+
+.social-info {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.social-platform {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #a1a1aa;
+}
+
+.social-handle {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #ffffff;
+}
 </style>
 </head>
 
@@ -1912,16 +1998,12 @@ footer a {
 
         <p class="hero-subtitle">
             Instantly teleport your cursor to the exact center of your screen with a quick
-            <strong>trackpad shake</strong> or <strong>Cmd + Cntrl + M</strong>.
+            <strong>trackpad shake</strong> or <kbd>⌘</kbd> <kbd>⌃</kbd> <kbd>M</kbd>.
             Runs silently in the background on macOS.
         </p>
 
         <div class="buttons">
-            <a
-                class="button primary"
-                href="https://github.com/mouselocator/mouselocator/releases/download/v1.0.0/MouseLocator.zip"
-                download
-            >
+            <a class="button primary" href="download.html">
                 Download for macOS — Free
             </a>
 
@@ -2173,6 +2255,51 @@ footer a {
     </div>
 </section>
 
+<!-- Socials Section -->
+<section class="socials-section">
+  <div class="socials-container">
+    <h3 class="socials-title">Follow MouseLocator Online</h3>
+    <p class="socials-subtitle">Join the community for updates, tips, and feature drops.</p>
+    
+    <div class="socials-links">
+      <!-- Instagram -->
+      <a href="https://instagram.com/mouselocator" target="_blank" rel="noopener" class="social-card instagram">
+        <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+        </svg>
+        <div class="social-info">
+          <span class="social-platform">Instagram</span>
+          <span class="social-handle">@mouselocator</span>
+        </div>
+      </a>
+
+      <!-- Reddit Community -->
+      <a href="https://reddit.com/r/mouselocator" target="_blank" rel="noopener" class="social-card reddit">
+        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.562-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.688-.562-1.249-1.25-1.249zm-4.566 3.865a.343.343 0 0 0-.036.483c.532.603 1.32.966 2.18.966.859 0 1.649-.363 2.18-.966a.343.343 0 0 0-.517-.45c-.398.452-.988.723-1.663.723-.675 0-1.265-.271-1.663-.723a.341.341 0 0 0-.481-.033z"/>
+        </svg>
+        <div class="social-info">
+          <span class="social-platform">Reddit Community</span>
+          <span class="social-handle">r/mouselocator</span>
+        </div>
+      </a>
+
+      <!-- LinkedIn -->
+      <a href="https://www.linkedin.com/in/mouse-locator-b34aaa43b/" target="_blank" rel="noopener" class="social-card linkedin">
+        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+        </svg>
+        <div class="social-info">
+          <span class="social-platform">Professional</span>
+          <span class="social-handle">LinkedIn</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
 <footer>
     <p>&copy; 2026 MouseLocator. All rights reserved.</p>
 
@@ -2274,128 +2401,6 @@ footer a {
 <script>
     fetch("https://assets.mailerlite.com/jsonp/2668985/forms/199929392523118231/takel")
 </script>
-<!-- Socials Section -->
-<section class="socials-section">
-  <div class="socials-container">
-    <h3 class="socials-title">Follow MouseLocator Online</h3>
-    <p class="socials-subtitle">Join the community for updates, tips, and feature drops.</p>
-    
-    <div class="socials-links">
-      <!-- Instagram -->
-      <a href="https://instagram.com/mouselocator" target="_blank" rel="noopener" class="social-card instagram">
-        <svg class="social-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-        </svg>
-        <div class="social-info">
-          <span class="social-platform">Instagram</span>
-          <span class="social-handle">@mouselocator</span>
-        </div>
-      </a>
 
-      <!-- Reddit Community -->
-      <a href="https://reddit.com/r/mouselocator" target="_blank" rel="noopener" class="social-card reddit">
-        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0zm5.01 4.744c.688 0 1.25.561 1.25 1.249a1.25 1.25 0 0 1-2.498.056l-2.597-.547-.8 3.747c1.824.07 3.48.632 4.674 1.488.308-.309.73-.491 1.207-.491.968 0 1.754.786 1.754 1.754 0 .716-.435 1.333-1.01 1.614a3.111 3.111 0 0 1 .042.52c0 2.694-3.13 4.87-7.004 4.87-3.874 0-7.004-2.176-7.004-4.87 0-.183.015-.366.043-.534A1.748 1.748 0 0 1 4.028 12c0-.968.786-1.754 1.754-1.754.463 0 .898.196 1.207.49 1.207-.883 2.878-1.43 4.744-1.487l.885-4.182a.342.342 0 0 1 .14-.197.35.35 0 0 1 .238-.042l2.906.617a1.214 1.214 0 0 1 1.108-.701zM9.25 12C8.561 12 8 12.562 8 13.25c0 .687.561 1.248 1.25 1.248.687 0 1.248-.561 1.248-1.249 0-.688-.561-1.249-1.249-1.249zm5.5 0c-.687 0-1.248.562-1.248 1.25 0 .687.561 1.248 1.249 1.248.688 0 1.249-.561 1.249-1.249 0-.688-.562-1.249-1.25-1.249zm-4.566 3.865a.343.343 0 0 0-.036.483c.532.603 1.32.966 2.18.966.859 0 1.649-.363 2.18-.966a.343.343 0 0 0-.517-.45c-.398.452-.988.723-1.663.723-.675 0-1.265-.271-1.663-.723a.341.341 0 0 0-.481-.033z"/>
-        </svg>
-        <div class="social-info">
-          <span class="social-platform">Reddit Community</span>
-          <span class="social-handle">r/mouselocator</span>
-        </div>
-      </a>
-
-      <!-- LinkedIn -->
-      <a href="https://www.linkedin.com/in/mouse-locator-b34aaa43b/" target="_blank" rel="noopener" class="social-card linkedin">
-        <svg class="social-icon" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
-        </svg>
-        <div class="social-info">
-          <span class="social-platform">Professional</span>
-          <span class="social-handle">LinkedIn</span>
-        </div>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- CSS Styles for Socials Section -->
-<style>
-.socials-section {
-  padding: 60px 20px;
-  background: rgba(255, 255, 255, 0.02);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  text-align: center;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-}
-
-.socials-container {
-  max-width: 800px;
-  margin: 0 auto;
-}
-
-.socials-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #ffffff;
-  margin-bottom: 8px;
-}
-
-.socials-subtitle {
-  font-size: 0.95rem;
-  color: #a1a1aa;
-  margin-bottom: 32px;
-}
-
-.socials-links {
-  display: flex;
-  justify-content: center;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-
-.social-card {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 20px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  text-decoration: none;
-  transition: all 0.25s ease;
-}
-
-.social-card:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.25);
-  transform: translateY(-2px);
-}
-
-.social-icon {
-  width: 22px;
-  height: 22px;
-  color: #ffffff;
-}
-
-.social-info {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-}
-
-.social-platform {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  color: #a1a1aa;
-}
-
-.social-handle {
-  font-size: 0.95rem;
-  font-weight: 500;
-  color: #ffffff;
-}
-</style>
 </body>
 </html>
