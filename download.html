@@ -2,83 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Downloading MouseLocator...</title>
+    <title>Routing...</title>
     
-    <!-- CLOUDFLARE TRACKING SCRIPT -->
+    <!-- 1. CLOUDFLARE TRACKS THE CLICK -->
     <script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "08c761a993e44c2e9c601e5a0c7cd2ac"}'></script>
     
-    <style>
-        body {
-            background: #080b12;
-            color: #fff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            text-align: center;
-            padding-top: 20vh;
-        }
-        a {
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
-        }
-        .download-box {
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 30px;
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 12px;
-            background: rgba(255,255,255,0.03);
-        }
-        .btn-back {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 10px 20px;
-            background: rgba(90,162,255,.1);
-            border: 1px solid rgba(90,162,255,.3);
-            border-radius: 8px;
-            color: #83b9ff;
-            font-weight: 600;
-            transition: background 0.2s ease;
-        }
-        .btn-back:hover {
-            background: rgba(90,162,255,.2);
-        }
-        /* Hides the download frame completely */
-        #downloadFrame {
-            display: none;
-        }
-    </style>
+    <!-- 2. INSTANTLY SENDS USER BACK TO INSTALL INSTRUCTIONS -->
+    <meta http-equiv="refresh" content="0; url=index.html?dl=1#install">
 </head>
-<body>
-    <div class="download-box">
-        <h2>Your download is starting...</h2>
-        <p style="color: #aab5c7; margin-bottom: 24px;">Thank you for trying MouseLocator.</p>
-        
-        <p>If it doesn't start automatically, 
-            <a href="https://github.com/mouselocator/mouselocator/releases/download/v1.0.0/MouseLocator.zip" download style="color: #83b9ff; font-weight: bold;">
-                click here
-            </a>.
-        </p>
-        
-        <p style="margin-top: 40px; font-size: 15px; color: #eef4ff;">
-            Taking you back for setup instructions in 5 seconds...
-        </p>
-        <a href="index.html#install" class="btn-back">Go to Instructions Now</a>
-    </div>
-
-    <!-- INVISIBLE IFRAME (Forces download without breaking the page) -->
-    <iframe id="downloadFrame"></iframe>
-
+<body style="background: #080b12; color: #fff; text-align: center; font-family: sans-serif; padding-top: 20vh;">
+    
     <script>
-        // 1. Tell the invisible iframe to load the zip file (starts download)
-        setTimeout(function() {
-            document.getElementById('downloadFrame').src = "https://github.com/mouselocator/mouselocator/releases/download/v1.0.0/MouseLocator.zip";
-        }, 500);
-
-        // 2. Redirect the main page back to the instructions after 5 seconds
-        setTimeout(function() {
-            window.location.href = "index.html#install";
-        }, 5000);
+        // Fallback instant redirect if meta tag is slow
+        window.location.replace("index.html?dl=1#install");
     </script>
 </body>
 </html>
