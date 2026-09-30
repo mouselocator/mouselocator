@@ -6,9 +6,6 @@
     
     <!-- CLOUDFLARE TRACKING SCRIPT -->
     <script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "08c761a993e44c2e9c601e5a0c7cd2ac"}'></script>
-
-    <!-- HTML FALLBACK REDIRECT -->
-    <meta http-equiv="refresh" content="1; url=https://github.com/mouselocator/mouselocator/releases/download/v1.0.0/MouseLocator.zip">
     
     <style>
         body {
@@ -39,18 +36,26 @@
         <h2>Your download is starting...</h2>
         <p style="color: #aab5c7; margin-bottom: 24px;">Thank you for trying MouseLocator.</p>
         
-        <p>If it doesn't start automatically, <a href="https://github.com/mouselocator/mouselocator/releases/download/v1.0.0/MouseLocator.zip" style="color: #83b9ff; font-weight: bold;">click here</a>.</p>
+        <p>If it doesn't start automatically, 
+            <a href="https://github.com/mouselocator/mouselocator/releases/download/v1.0.0/MouseLocator.zip" download style="color: #83b9ff; font-weight: bold;">
+                click here
+            </a>.
+        </p>
         
         <p style="margin-top: 40px; font-size: 14px;">
             <a href="index.html" style="color: #6b7689;">&larr; Back to homepage</a>
         </p>
     </div>
 
-    <!-- JAVASCRIPT INSTANT REDIRECT -->
+    <!-- JAVASCRIPT GHOST CLICK (Mimics a real download click) -->
     <script>
-        // Triggers the download half a second after the page loads
         setTimeout(function() {
-            window.location.href = "https://github.com/mouselocator/mouselocator/releases/download/v1.0.0/MouseLocator.zip";
+            var ghostLink = document.createElement('a');
+            ghostLink.href = "https://github.com/mouselocator/mouselocator/releases/download/v1.0.0/MouseLocator.zip";
+            ghostLink.download = "MouseLocator.zip";
+            document.body.appendChild(ghostLink);
+            ghostLink.click();
+            document.body.removeChild(ghostLink);
         }, 500);
     </script>
 </body>
